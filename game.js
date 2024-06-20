@@ -28,26 +28,43 @@ class MinesweeperRound {
     // console.log(screenWidth, screenHeight)
   }
 
-  initGame() {
+  calculateCellSizes(override) {
     let trF = screenHeight / screenWidth;
     let trC = this.height / this.width;
 
+    let windowGrabberHeight = document.querySelector(".window-header").getBoundingClientRect().height;
+    let borderSize = getComputedStyle(document.documentElement).getPropertyValue('--border-size').split("px")[0];
+    // resizeCanvas(width  - borderSize * 2, height - borderSize * 3);
+
+
     if (trF >= trC) {
-      cellSize = screenWidth / this.width;
+      cellSize = (window.innerWidth - borderSize * 2) / (this.width + 1);
       screenConstraint = 0;
     } else {
-      cellSize = screenHeight / this.height;
+      cellSize = (window.innerHeight - borderSize * 3 - windowGrabberHeight * 2) / (this.height + 3);
       screenConstraint = 1;
     }
 
-    cellSize = Math.floor(cellSize);
+    if (!override) {
+      cellSize = Math.floor(cellSize);
+    } else {
+      cellSize = Math.floor(override);
+    }
+
+    headerSize = cellSize * 2.5;
+    border = cellSize * (5/8);
+
+
+    setCanvasSize(cellSize * this.width + border * 2, cellSize * this.height + headerSize + border * 2);
+  }
+
+  initGame() {
+    this.calculateCellSizes();
 
     this.grid = Array();
     for(let i = 0; i < this.width * this.height; i++) {
       this.grid[i] = new Cell(i % this.width, Math.floor(i / this.width), false);
     }
-    headerSize = cellSize * 2.5;
-    border = cellSize * (5/8);
   }
 
   winCheck() {
@@ -121,14 +138,20 @@ class MinesweeperRound {
    }
 
    minesweeperFont(val, x, y, charWidth, charHeight, count) {
-     for (let i = 0; i < count; i++) {
-       let charX = x + charWidth * i;
-       let charY = y;
-       val = this.padValue(val, count);
-       let numIndex = +val.charAt(i);
-       let charImg = numImages[numIndex];
-       image(charImg, charX, charY, charWidth, charHeight);
-     }
+    for (let i = 0; i < count; i++) {
+      let charX = x + charWidth * i;
+      let charY = y;
+      
+      val = this.padValue(val, count);
+      let numIndex = +val.charAt(i);
+      let charImg = numImages[numIndex];
+      if (charImg) {
+        image(charImg, charX, charY, charWidth, charHeight);
+      } else {
+        console.log(charImg, charX, charY, charWidth, charHeight, numIndex, val, count)
+        noLoop();
+      }
+    }
    }
 
    drawHUD() {
@@ -211,7 +234,7 @@ class MinesweeperRound {
          }
          if (i == 0 || i == 31) {
          }
-         image(spriteImg, spriteX, spriteY, spriteW, spriteH);//((flipX == -1) ? -spriteX : spriteX), ((flipY == -1) ? -spriteY - spriteH : spriteY - spriteH), spriteW, spriteH);
+        image(spriteImg, spriteX, spriteY, spriteW, spriteH);//((flipX == -1) ? -spriteX : spriteX), ((flipY == -1) ? -spriteY - spriteH : spriteY - spriteH), spriteW, spriteH);
        }
      }
      //image(edge, 0, headerSize - border, cellSize, cellAnti);
@@ -244,8 +267,10 @@ class MinesweeperRound {
      let textW = 26/32 * cellSize;
      let textH = 46/26 * textW;
      let textY = (headerSize - textH + border) / 2;
-     this.minesweeperFont(Math.floor(this.gameTimer / 1000), textY, textY, textW, textH, 3);
-     this.minesweeperFont(this.mines - this.flagged, width - (textW * 3) - textY, textY, textW, textH, 3);
+     if (this.mines != undefined && this.flagged != undefined) {
+      this.minesweeperFont(Math.floor(this.gameTimer / 1000), textY, textY, textW, textH, 3);
+      this.minesweeperFont(this.mines - this.flagged, width - (textW * 3) - textY, textY, textW, textH, 3);
+     }
    }
 
    peekCell(x,y) {

@@ -340,6 +340,7 @@
 
 
       function peekRadius(px, py, show) {
+        let safeCount = 0;
         for (let x = -1; x <= 1; x++) {
           for (let y = -1; y <= 1; y++) {
             let iX = x + px;
@@ -370,12 +371,32 @@
             if (show === "flag") {
               if (!cell.revealed && !cell.flagged)
                 game.flagCell(iX, iY);
-            } else if (show === "reveal") {
-              if (!cell.flagged)
-                game.revealCell(iX, iY);
             }
 
+            if (cell.flagged)
+              safeCount++;
+
             rect(cX, cY, cellSize);
+          }
+
+          if (show === "reveal" && safeCount == game.grid[px + py * game.width].count) {
+            for (let x = -1; x <= 1; x++) {
+              for (let y = -1; y <= 1; y++) {
+                let iX = x + px;
+                let iY = y + py;
+                let cX = iX * cellSize;
+                let cY = iY * cellSize + headerSize;
+
+                if (x == 0 && y == 0)
+                  continue;
+
+                if (iX < 0 || iX > game.width - 1 || iY < 0 || iY > game.height - 1)
+                  continue;
+
+                let cell = game.grid[iX + iY * game.width];
+                game.revealCell(iX, iY);
+              }
+            }
           }
         }
       }

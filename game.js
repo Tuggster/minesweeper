@@ -29,7 +29,7 @@ class MinesweeperRound {
   }
 
   calculateCellSizes(override) {
-    let trF = screenHeight / screenWidth;
+    let trF = window.innerHeight / window.innerWidth;
     let trC = this.height / this.width;
 
     let windowGrabberHeight = document.querySelector(".window-header").getBoundingClientRect().height;
@@ -38,10 +38,10 @@ class MinesweeperRound {
 
 
     if (trF >= trC) {
-      cellSize = ((window.innerWidth * 0.9) - borderSize * 2) / (this.width + 1);
+      cellSize = ((window.innerWidth * 0.90) - borderSize * 2) / (this.width + 1);
       screenConstraint = 0;
     } else {
-      cellSize = ((window.innerHeight * 0.9) - borderSize * 3 - windowGrabberHeight * 3) / (this.height + 3);
+      cellSize = ((window.innerHeight * 0.90) - borderSize * 4 - windowGrabberHeight * 3) / (this.height + 3);
       screenConstraint = 1;
     }
 

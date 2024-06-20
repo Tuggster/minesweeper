@@ -139,7 +139,7 @@
     <div class="context-menu">
       <div name="game">
         <div class="shortcut">
-          <p>New</p>
+          <p onclick="newGame()">New</p>
           <p>F2</p>
         </div>
         <hr>
@@ -280,28 +280,25 @@
               game.peekCell(mX, mY);
               // if (!lastClick)
               //   // rButton.src = facePeek;
-              if (mX != xStart || mY != yStart) {
+              let cell = game.grid[xStart + yStart * game.width];
+              if ((mX != xStart || mY != yStart) || cell.revealed) {
                 peekRadius(xStart, yStart, false);
               }
             } else if (lastClick == 1 && mouseIsPressed == 0) {
               if (mouseButton === LEFT && !keyIsDown(SHIFT)) {
                 game.peekCell(mX, mY);
-                if (mX != xStart || mY != yStart || keyIsDown(CONTROL)) {
-                  let cell = game.grid[xStart + yStart * game.width];
-                  if (cell) {
-                    if (cell.revealed)
-                      peekRadius(xStart, yStart, "reveal");
-                  }
-                } else {
+                let cell = game.grid[xStart + yStart * game.width];
+                if (!cell.revealed) {
                   game.revealCell(mX, mY);
-                } 
+                } else if (mX == xStart && mY == yStart) {
+                  peekRadius(mX, mY, "reveal");
+                }
               } else if (mouseButton === RIGHT || keyIsDown(SHIFT)) {
-                if (mX != xStart || mY != yStart || keyIsDown(CONTROL)) {
-                  let cell = game.grid[xStart + yStart * game.width];
-                  if (cell.revealed)
-                    peekRadius(xStart, yStart, "flag");
-                } else {
+                let cell = game.grid[xStart + yStart * game.width];
+                if (!cell.revealed) {
                   game.flagCell(mX, mY);
+                } else if (mX == xStart && mY == yStart) {
+                  peekRadius(xStart, yStart, "flag");
                 }
               }
             }

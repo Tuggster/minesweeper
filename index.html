@@ -195,7 +195,7 @@
       function setCanvasSize(width, height) {
         let windowGrabberHeight = document.querySelector(".window-header").getBoundingClientRect().height;
         let borderSize = getComputedStyle(document.documentElement).getPropertyValue('--border-size').split("px")[0];
-        resizeCanvas(width  - borderSize * 2, height - borderSize * 3);
+        resizeCanvas(width  - borderSize * 2, (height - borderSize * 3));
 
         canvas.parentElement.style.width = `${width}px`;
         canvas.parentElement.style.height = `${height + windowGrabberHeight}px`;

@@ -38,10 +38,10 @@ class MinesweeperRound {
 
 
     if (trF >= trC) {
-      cellSize = (window.innerWidth - borderSize * 2) / (this.width + 1);
+      cellSize = ((window.innerWidth * 0.9) - borderSize * 2) / (this.width + 1);
       screenConstraint = 0;
     } else {
-      cellSize = (window.innerHeight - borderSize * 3 - windowGrabberHeight * 2) / (this.height + 3);
+      cellSize = ((window.innerHeight * 0.9) - borderSize * 3 - windowGrabberHeight * 3) / (this.height + 3);
       screenConstraint = 1;
     }
 

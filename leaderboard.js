@@ -37,7 +37,7 @@ const uploadToLeaderboard = async () => {
   const payload = {
     difficulty: difficultyHash,
     handle: username,
-    time: Math.floor(game.gameTimer / 1000),
+    time: game.gameTimer / 1000,
     proof: "imlazy",
   };
 

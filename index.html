@@ -74,6 +74,7 @@
     <meta content="True" name="HandheldFriendly" />
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="scrollbar.css" />
     <title>Sweep</title>
   </head>
   <body ondragstart="return false;" ondrop="return false;" oncontextmenu="return false;">
@@ -108,7 +109,7 @@
       <canvas id="defaultCanvas0" width="300" height="300"></canvas>
     </main>
 
-    <div class="game-container leaderboard draggable" style="max-width: 350px; width: 100%; visibility: hidden">
+    <div class="game-container leaderboard draggable" style="max-width: 380px; width: 100%; visibility: hidden">
       <div class="window-header">
         <div class="title-bar">
           <button onclick="hideLeaderboard()">
@@ -120,17 +121,19 @@
           </button>
         </div>
       </div>
-      <div class="custom-header">
+      <div class="custom-header nopadding">
         <div class="leaderboard-flex">
           <h1>Fastest Solves:</h1>
 
-          <table id="leaderboard-data">
-            <tr>
-              <td>hi</td>
-              <td>hi</td>
-              <td>hi</td>
-            </tr>
-          </table>
+          <div class="leaderboard-table-container">
+            <table id="leaderboard-data">
+              <tr>
+                <td>hi</td>
+                <td>hi</td>
+                <td>hi</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
     </div>

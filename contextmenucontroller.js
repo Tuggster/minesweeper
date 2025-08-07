@@ -1,3 +1,5 @@
+let hoveringMain = false;
+
 window.addEventListener("load", function () {
   let radios = this.document.querySelectorAll(".cmenu-radio");
   radios.forEach((radio) => {
@@ -19,6 +21,14 @@ window.addEventListener("load", function () {
         }
       });
     });
+  });
+
+  document.querySelector("main").addEventListener("mouseenter", () => {
+    hoveringMain = true;
+  });
+
+  document.querySelector("main").addEventListener("mouseleave", () => {
+    hoveringMain = false;
   });
 
   let saturation = this.document.getElementById("saturation");
@@ -77,31 +87,33 @@ window.addEventListener("load", function () {
     });
   });
 
-  let main = document.querySelector("main");
-  let header = main.children[0].children[0];
-  header.addEventListener("mousemove", (event) => {
-    if (event.buttons & 1) {
-      if (!dragging) {
-        dragging = true;
-        startX = event.clientX;
-        startY = event.clientY;
-        console.log("started dragging! ", startX, startY, event.clientX, event.clientY);
+  let draggables = document.querySelectorAll(".draggable");
+  draggables.forEach((draggable) => {
+    let header = draggable.children[0].children[0];
+    header.addEventListener("mousemove", (event) => {
+      if (event.buttons & 1) {
+        if (!dragging) {
+          dragging = true;
+          startX = event.clientX;
+          startY = event.clientY;
+          console.log("started dragging! ", startX, startY, event.clientX, event.clientY);
+        } else {
+          let diffX = startX - event.clientX;
+          let diffY = startY - event.clientY;
+
+          let newLeft = draggable.style.left.split("px")[0] - diffX;
+          let newTop = draggable.style.top.split("px")[0] - diffY;
+
+          draggable.style.left = `${newLeft}px`;
+          draggable.style.top = `${newTop}px`;
+
+          startX = event.clientX;
+          startY = event.clientY;
+        }
       } else {
-        let diffX = startX - event.clientX;
-        let diffY = startY - event.clientY;
-
-        let newLeft = main.style.left.split("px")[0] - diffX;
-        let newTop = main.style.top.split("px")[0] - diffY;
-
-        main.style.left = `${newLeft}px`;
-        main.style.top = `${newTop}px`;
-
-        startX = event.clientX;
-        startY = event.clientY;
+        dragging = false;
       }
-    } else {
-      dragging = false;
-    }
+    });
   });
 });
 

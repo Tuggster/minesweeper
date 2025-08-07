@@ -81,11 +81,14 @@
     <script src="cell.js"></script>
     <script src="game.js"></script>
     <script src="contextmenucontroller.js"></script>
+    <script src="md5.js"></script>
+    <script src="leaderboard.js"></script>
+    <script src="config.js"></script>
 
     <!-- <div class="btn-container" style="width:100%">
       <img src="../imgs/face1.png" alt="" id="resetButton" class="vertical-center play-button" onclick="newGame()">
     </div> -->
-    <main class="game-container">
+    <main class="game-container draggable">
       <div class="window-header">
         <div class="title-bar">
           <button>
@@ -99,10 +102,38 @@
         <div class="options-bar">
           <h2 name="game">Game</h2>
           <h2 name="help">Help</h2>
+          <h2 name="leaderboard">Leaderboard</h2>
         </div>
       </div>
       <canvas id="defaultCanvas0" width="300" height="300"></canvas>
     </main>
+
+    <div class="game-container leaderboard draggable" style="max-width: 375px; visibility: hidden">
+      <div class="window-header">
+        <div class="title-bar">
+          <button onclick="hideLeaderboard()">
+            <div class="minimize-button"></div>
+          </button>
+          <h1>Leaderboard</h1>
+          <button>
+            <div class="down-button">◤</div>
+          </button>
+        </div>
+      </div>
+      <div class="custom-header">
+        <div class="leaderboard-flex">
+          <h1>Fastest Solves:</h1>
+
+          <table id="leaderboard-data">
+            <tr>
+              <td>hi</td>
+              <td>hi</td>
+              <td>hi</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
 
     <div class="game-container customize" style="width: 50%">
       <div class="window-header">
@@ -171,6 +202,10 @@
         <p>How to Use Help</p>
         <hr />
         <p>About Minesweeper...</p>
+      </div>
+
+      <div name="leaderboard" onclick="getLeaderboardForDifficulty(true)">
+        <p>View Leaderboard</p>
       </div>
     </div>
 
@@ -248,6 +283,10 @@
       }
 
       function clickLogic() {
+        if (!hoveringMain) {
+          return;
+        }
+
         if (contextOpen) {
           return;
         }
@@ -406,7 +445,6 @@
           document.getElementById("customWidth").value = rows;
           document.getElementById("customHeight").value = cols;
           document.getElementById("customMines").value = mines;
-
           console.log(rows, cols, mines);
         }
       }
@@ -418,6 +456,7 @@
         screenHeight = windowHeight - border * 2 - headerSize - 50;
         game = new MinesweeperRound(rows, cols, mines);
         setCanvasSize(cellSize * game.width + border * 2, cellSize * game.height + headerSize + border * 2);
+        getLeaderboardForDifficulty(false);
       }
 
       function fitToContainer(canvas) {

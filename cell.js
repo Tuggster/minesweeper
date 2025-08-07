@@ -4,43 +4,43 @@ let numImages = Array();
 let blank;
 
 function preload() {
-  clearedCell = loadImage('./imgs/cleared.png');
-  bombCell = loadImage('./imgs/bomb.png');
-  fatalCell = loadImage('./imgs/fatal.png');
-  falseCell = loadImage('./imgs/false.png');
-  blankCell = loadImage('./imgs/empty.png');
-  flagCell = loadImage('./imgs/flag.png');
-  oneCell = loadImage('./imgs/1.png');
-  twoCell = loadImage('./imgs/2.png');
-  threeCell = loadImage('./imgs/3.png');
-  fourCell = loadImage('./imgs/4.png');
-  fiveCell = loadImage('./imgs/5.png');
-  sixCell = loadImage('./imgs/6.png');
-  sevenCell = loadImage('./imgs/7.png');
-  eightCell = loadImage('./imgs/8.png');
-  faceNormal = loadImage('./imgs/face1.png');
-  facePeek = loadImage('./imgs/face2.png');
-  faceWin = loadImage('./imgs/face3.png');
-  faceDead = loadImage('./imgs/face4.png');
-  corner1 = loadImage('./imgs/corner1.png');
-  corner2 = loadImage('./imgs/corner2.png');
-  corner3 = loadImage('./imgs/corner3.png');
-  corner4 = loadImage('./imgs/corner4.png');
-  corner5 = loadImage('./imgs/corner5.png');
-  corner6 = loadImage('./imgs/corner6.png');
-  edge = loadImage('./imgs/edge.png');
-  edgeSide = loadImage('./imgs/edgeright.png');
-  number0 = loadImage('./imgs/number0.png');
-  number1 = loadImage('./imgs/number1.png');
-  number2 = loadImage('./imgs/number2.png');
-  number3 = loadImage('./imgs/number3.png');
-  number4 = loadImage('./imgs/number4.png');
-  number5 = loadImage('./imgs/number5.png');
-  number6 = loadImage('./imgs/number6.png');
-  number7 = loadImage('./imgs/number7.png');
-  number8 = loadImage('./imgs/number8.png');
-  number9 = loadImage('./imgs/number9.png');
-  numberDash = loadImage('./imgs/numberdash.png');
+  clearedCell = loadImage("./imgs/cleared.png");
+  bombCell = loadImage("./imgs/bomb.png");
+  fatalCell = loadImage("./imgs/fatal.png");
+  falseCell = loadImage("./imgs/false.png");
+  blankCell = loadImage("./imgs/empty.png");
+  flagCell = loadImage("./imgs/flag.png");
+  oneCell = loadImage("./imgs/1.png");
+  twoCell = loadImage("./imgs/2.png");
+  threeCell = loadImage("./imgs/3.png");
+  fourCell = loadImage("./imgs/4.png");
+  fiveCell = loadImage("./imgs/5.png");
+  sixCell = loadImage("./imgs/6.png");
+  sevenCell = loadImage("./imgs/7.png");
+  eightCell = loadImage("./imgs/8.png");
+  faceNormal = loadImage("./imgs/face1.png");
+  facePeek = loadImage("./imgs/face2.png");
+  faceWin = loadImage("./imgs/face3.png");
+  faceDead = loadImage("./imgs/face4.png");
+  corner1 = loadImage("./imgs/corner1.png");
+  corner2 = loadImage("./imgs/corner2.png");
+  corner3 = loadImage("./imgs/corner3.png");
+  corner4 = loadImage("./imgs/corner4.png");
+  corner5 = loadImage("./imgs/corner5.png");
+  corner6 = loadImage("./imgs/corner6.png");
+  edge = loadImage("./imgs/edge.png");
+  edgeSide = loadImage("./imgs/edgeright.png");
+  number0 = loadImage("./imgs/number0.png");
+  number1 = loadImage("./imgs/number1.png");
+  number2 = loadImage("./imgs/number2.png");
+  number3 = loadImage("./imgs/number3.png");
+  number4 = loadImage("./imgs/number4.png");
+  number5 = loadImage("./imgs/number5.png");
+  number6 = loadImage("./imgs/number6.png");
+  number7 = loadImage("./imgs/number7.png");
+  number8 = loadImage("./imgs/number8.png");
+  number9 = loadImage("./imgs/number9.png");
+  numberDash = loadImage("./imgs/numberdash.png");
 
   // Imgur Album: https://imgur.com/a/mkgzVCo
   bombImgs.push(oneCell);
@@ -64,8 +64,6 @@ function preload() {
   numImages.push(number9);
   numImages.push(numberDash);
 }
-
-
 
 class Cell {
   constructor(x, y, mine) {
@@ -94,7 +92,7 @@ class Cell {
     let cX = this.x * cellSize;
     let cY = this.y * cellSize + headerSize;
 
-    if (this.revealed  && !this.flagged) {
+    if (this.revealed && !this.flagged) {
       if (this.mine) {
         if (this.revealed == "fatal" && gameOver) {
           image(fatalCell, cX, cY, cellSize, cellSize);
@@ -112,7 +110,7 @@ class Cell {
       if (this.flagged) {
         if (this.mine && gameOver) {
           image(flagCell, cX, cY, cellSize, cellSize);
-        } else if (!this.mine && gameOver){
+        } else if (!this.mine && gameOver) {
           image(falseCell, cX, cY, cellSize, cellSize);
         } else {
           image(flagCell, cX, cY, cellSize, cellSize);
@@ -121,7 +119,6 @@ class Cell {
         image(blankCell, cX, cY, cellSize, cellSize);
       }
     }
-
   }
 
   floodFill() {
@@ -132,11 +129,9 @@ class Cell {
       for (let y = -1; y <= 1; y++) {
         let gX = this.x + x;
         let gY = this.y + y;
-        let gCell = game.grid[gX + (gY * (game.width))];
+        let gCell = game.grid[gX + gY * game.width];
 
-
-        if (gX < 0 || gX >= game.width ||
-           gY < 0 || gY >= game.height || (x == 0 && y == 0)) {
+        if (gX < 0 || gX >= game.width || gY < 0 || gY >= game.height || (x == 0 && y == 0)) {
           continue;
         }
 
@@ -163,11 +158,10 @@ class Cell {
         let gX = this.x + x;
         let gY = this.y + y;
 
-        if (gX < 0 || gX >= game.width ||
-           gY < 0 || gY >= game.height) {
+        if (gX < 0 || gX >= game.width || gY < 0 || gY >= game.height) {
           continue;
         } else {
-          let gCell = game.grid[gX + (gY * (game.width))];
+          let gCell = game.grid[gX + gY * game.width];
           if (gCell.isMine()) {
             this.count++;
           }

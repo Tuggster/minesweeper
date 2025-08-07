@@ -103,10 +103,13 @@ const updateLeaderboard = () => {
   const labels = ["username", "time (seconds)", "date"];
   addEach(leaderboardTable, labels, "th");
 
-  leaderboardData.forEach((score) => {
+  leaderboardData.forEach((score, index) => {
     const style = score.isYou ? 'style="background-color: gold;"' : "";
     const time = new Date(score.createdAt);
-    const values = [score.handle, score.time, formatDateToYYYYMMDD(time)];
+
+    const handle = index === 0 ? `${score.handle} 👑` : score.handle;
+
+    const values = [handle, score.time, formatDateToYYYYMMDD(time)];
     addEach(leaderboardTable, values, undefined, style);
   });
 };

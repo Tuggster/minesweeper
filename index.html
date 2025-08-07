@@ -309,8 +309,10 @@
           }
         } else if (keyCode === 189) {
           game.calculateCellSizes(cellSize - 5);
+          manualSize = true;
         } else if (keyCode === 187) {
           game.calculateCellSizes(cellSize + 5);
+          manualSize = true;
         }
       }
 

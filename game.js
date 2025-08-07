@@ -4,6 +4,7 @@ let screenConstraint = 0;
 let p5Init = false;
 
 let cellSize = 0;
+let manualSize = false;
 
 let startReserved = 1;
 let gameOver = false;
@@ -54,7 +55,7 @@ class MinesweeperRound {
   }
 
   initGame() {
-    if (cellSize === 0) {
+    if (!manualSize) {
       this.calculateCellSizes();
     }
 

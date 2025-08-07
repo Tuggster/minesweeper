@@ -6,3 +6,6 @@ I wanted to play minesweeper while bored in class, but I didn't want ads or ugly
 They deserve a faithful, accurate, low-res recreation.
 
 I hand-traced the graphics in photoshop and wrote all the game logic myself.
+
+# 2025 and beyond
+Added leaderboard support and more customization options in the settings dropdown.

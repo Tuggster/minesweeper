@@ -97,7 +97,7 @@ const preferences = [
       return value === "true";
     },
     lsKey: LOCAL_STORAGE_COLOR_KEY,
-    value: false,
+    value: true,
   },
 ];
 

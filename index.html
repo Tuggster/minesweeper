@@ -188,7 +188,10 @@
           <p id="marks">Marks (?)</p>
         </div>
         <div class="cmenu-radio optional">
-          <p id="shortcuts">Shortcuts</p>
+          <p id="shortcuts_reveal">1-click Reveal</p>
+        </div>
+        <div class="cmenu-radio optional">
+          <p id="shortcuts_flag">1-click Flag</p>
         </div>
         <div class="cmenu-radio optional">
           <p id="saturation" class="selected">Color</p>
@@ -295,7 +298,8 @@
       }
 
       function clickLogic() {
-        const shortcutsEnabled = getPreferenceValue("shortcuts");
+        const shortcutsReveal = getPreferenceValue("shortcuts_reveal");
+        const shortcutsFlag = getPreferenceValue("shortcuts_flag");
         const marksEnabled = getPreferenceValue("marks");
 
         if (!hoveringMain) {
@@ -330,7 +334,7 @@
 
               let cell = game.grid[xStart + yStart * game.width];
               const draggedOrClicking = mX != xStart || mY != yStart || cell.revealed;
-              if (draggedOrClicking && shortcutsEnabled) {
+              if (draggedOrClicking && (shortcutsReveal || shortcutsFlag)) {
                 peekRadius(xStart, yStart, false);
               }
             } else if (lastClick == 1 && mouseIsPressed == 0) {
@@ -341,14 +345,14 @@
                   game.revealCell(mX, mY);
                 } else if (!cell.revealed && cell.marked) {
                   game.unmarkCell(mX, mY);
-                } else if (mX == xStart && mY == yStart && shortcutsEnabled) {
+                } else if (mX == xStart && mY == yStart && shortcutsReveal) {
                   peekRadius(mX, mY, "reveal");
                 }
               } else if (mouseButton === RIGHT || keyIsDown(SHIFT)) {
                 let cell = game.grid[xStart + yStart * game.width];
                 if (!cell.revealed && ((marksEnabled && !cell.flagged) || !marksEnabled)) {
                   game.flagCell(mX, mY);
-                } else if (mX == xStart && mY == yStart && !cell.flagged && !cell.marked && shortcutsEnabled) {
+                } else if (mX == xStart && mY == yStart && !cell.flagged && !cell.marked && shortcutsFlag) {
                   peekRadius(xStart, yStart, "flag");
                 } else if (cell.flagged && marksEnabled) {
                   game.markCell(mX, mY);

@@ -12,8 +12,12 @@ window.addEventListener("load", function () {
             setPreferenceValue("collapsed", selected);
             break;
           }
-          case "shortcuts": {
-            setPreferenceValue("shortcuts", selected);
+          case "shortcuts_reveal": {
+            setPreferenceValue("shortcuts_reveal", selected);
+            break;
+          }
+          case "shortcuts_flag": {
+            setPreferenceValue("shortcuts_flag", selected);
             break;
           }
           case "saturation": {

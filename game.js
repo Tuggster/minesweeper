@@ -272,7 +272,7 @@ class MinesweeperRound {
     let gX = x * cellSize;
     let gY = y * cellSize + headerSize;
     let gCell = this.grid[x + y * this.width];
-    if (!gCell.revealed && !gCell.flagged) {
+    if (!gCell.revealed && !gCell.flagged && !gCell.marked) {
       image(clearedCell, gX, gY, cellSize, cellSize);
     }
   }
@@ -284,6 +284,29 @@ class MinesweeperRound {
       if (gCell.flagged) {
         this.flagged++;
       } else {
+        this.flagged--;
+      }
+    }
+  }
+
+  unmarkCell(x, y) {
+    let gCell = this.grid[x + y * this.width];
+    if (gCell.marked && !gCell.revealed && !gCell.flagged) {
+      gCell.flagged = false;
+      gCell.marked = false;
+    }
+  }
+
+  markCell(x, y) {
+    let gCell = this.grid[x + y * this.width];
+    if (!gCell.revealed && gCell.flagged) {
+      if (gCell.flagged) {
+        gCell.flagged = false;
+        gCell.marked = true;
+        this.flagged--;
+      } else {
+        gCell.flagged = true;
+        gCell.marked = false;
         this.flagged--;
       }
     }

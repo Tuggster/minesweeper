@@ -185,13 +185,16 @@
         </div>
         <hr />
         <div class="cmenu-radio optional">
-          <p>Marks (?)</p>
+          <p id="marks">Marks (?)</p>
+        </div>
+        <div class="cmenu-radio optional">
+          <p id="shortcuts">Shortcuts</p>
         </div>
         <div class="cmenu-radio optional">
           <p id="saturation" class="selected">Color</p>
         </div>
         <hr />
-        <p>Best Times...</p>
+        <p onclick="getLeaderboardForDifficulty(true)">Best Times...</p>
         <hr />
         <p>Exit</p>
       </div>
@@ -247,6 +250,8 @@
         canvasHTML = createCanvas(windowWidth - border * 2, windowHeight - border * 2);
         document.getElementById("defaultCanvas0").remove();
 
+        markedCell.filter(GRAY);
+
         let canvasElement = canvasHTML.elt;
         canvasElement.parentElement.class = "game";
 
@@ -290,6 +295,9 @@
       }
 
       function clickLogic() {
+        const shortcutsEnabled = getPreferenceValue("shortcuts");
+        const marksEnabled = getPreferenceValue("marks");
+
         if (!hoveringMain) {
           return;
         }
@@ -319,27 +327,31 @@
           if (!touch) {
             if (mouseIsPressed == 1) {
               game.peekCell(mX, mY);
-              // if (!lastClick)
-              //   // rButton.src = facePeek;
+
               let cell = game.grid[xStart + yStart * game.width];
-              if (mX != xStart || mY != yStart || cell.revealed) {
+              const draggedOrClicking = mX != xStart || mY != yStart || cell.revealed;
+              if (draggedOrClicking && shortcutsEnabled) {
                 peekRadius(xStart, yStart, false);
               }
             } else if (lastClick == 1 && mouseIsPressed == 0) {
               if (mouseButton === LEFT && !keyIsDown(SHIFT)) {
-                game.peekCell(mX, mY);
                 let cell = game.grid[xStart + yStart * game.width];
-                if (!cell.revealed) {
+                game.peekCell(mX, mY);
+                if (!cell.revealed && !cell.marked) {
                   game.revealCell(mX, mY);
-                } else if (mX == xStart && mY == yStart) {
+                } else if (!cell.revealed && cell.marked) {
+                  game.unmarkCell(mX, mY);
+                } else if (mX == xStart && mY == yStart && shortcutsEnabled) {
                   peekRadius(mX, mY, "reveal");
                 }
               } else if (mouseButton === RIGHT || keyIsDown(SHIFT)) {
                 let cell = game.grid[xStart + yStart * game.width];
-                if (!cell.revealed) {
+                if (!cell.revealed && ((marksEnabled && !cell.flagged) || !marksEnabled)) {
                   game.flagCell(mX, mY);
-                } else if (mX == xStart && mY == yStart) {
+                } else if (mX == xStart && mY == yStart && !cell.flagged && !cell.marked && shortcutsEnabled) {
                   peekRadius(xStart, yStart, "flag");
+                } else if (cell.flagged && marksEnabled) {
+                  game.markCell(mX, mY);
                 }
               }
             }
@@ -407,7 +419,7 @@
               if (!cell.revealed && !cell.flagged) game.flagCell(iX, iY);
             }
 
-            if (cell.flagged) safeCount++;
+            if (cell.flagged || cell.marked) safeCount++;
 
             rect(cX, cY, cellSize);
           }
@@ -425,7 +437,9 @@
                 if (iX < 0 || iX > game.width - 1 || iY < 0 || iY > game.height - 1) continue;
 
                 let cell = game.grid[iX + iY * game.width];
-                game.revealCell(iX, iY);
+                if (!cell.marked) {
+                  game.revealCell(iX, iY);
+                }
               }
             }
           }

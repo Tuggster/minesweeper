@@ -2,15 +2,8 @@ let leaderboardData = [];
 let collapsed = false;
 
 const toggleCollapsed = (state) => {
-  this.localStorage.setItem(LOCAL_STORAGE_COLLAPSE_KEY, state);
   getLeaderboardForDifficulty(false);
-
-  const collapseBtn = this.document.getElementById("collapse");
-  if (state == "true") {
-    collapseBtn.classList.add("selected");
-  } else {
-    collapseBtn.classList.remove("selected");
-  }
+  handleRadioUpdate("collapse", state);
 };
 
 const getCollapsed = () => {

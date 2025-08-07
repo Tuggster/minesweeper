@@ -10,6 +10,7 @@ function preload() {
   falseCell = loadImage("./imgs/false.png");
   blankCell = loadImage("./imgs/empty.png");
   flagCell = loadImage("./imgs/flag.png");
+  markedCell = loadImage("./imgs/flag.png");
   oneCell = loadImage("./imgs/1.png");
   twoCell = loadImage("./imgs/2.png");
   threeCell = loadImage("./imgs/3.png");
@@ -74,6 +75,7 @@ class Cell {
     this.reserved = false;
     this.revealed = false;
     this.flagged = false;
+    this.marked = false;
 
     if (this.mine) {
       this.count = -1;
@@ -115,6 +117,8 @@ class Cell {
         } else {
           image(flagCell, cX, cY, cellSize, cellSize);
         }
+      } else if (this.marked) {
+        image(markedCell, cX, cY, cellSize, cellSize);
       } else {
         image(blankCell, cX, cY, cellSize, cellSize);
       }

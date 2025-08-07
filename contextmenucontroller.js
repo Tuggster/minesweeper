@@ -7,8 +7,23 @@ window.addEventListener("load", function () {
 
     choices.forEach((element) => {
       element.onRadioToggle = function (selected) {
-        if (element.id === "collapse") {
-          toggleCollapsed(selected); // call your actual function here
+        switch (element.id) {
+          case "collapse": {
+            setPreferenceValue("collapsed", selected);
+            break;
+          }
+          case "shortcuts": {
+            setPreferenceValue("shortcuts", selected);
+            break;
+          }
+          case "saturation": {
+            setPreferenceValue("color", selected);
+            break;
+          }
+          case "marks": {
+            setPreferenceValue("marks", selected);
+            break;
+          }
         }
       };
 
@@ -32,9 +47,6 @@ window.addEventListener("load", function () {
     });
   });
 
-  const isCollapsed = this.localStorage.getItem(LOCAL_STORAGE_COLLAPSE_KEY);
-  toggleCollapsed(isCollapsed);
-
   const leaderboardCtx = document.querySelector("#leaderboard-ctx");
 
   const newNode = this.document.createElement("p");
@@ -50,16 +62,6 @@ window.addEventListener("load", function () {
 
   document.querySelector("main").addEventListener("mouseleave", () => {
     hoveringMain = false;
-  });
-
-  let saturation = this.document.getElementById("saturation");
-  saturation.addEventListener("click", () => {
-    let containers = document.querySelectorAll(".game-container");
-
-    containers.forEach((element) => {
-      this.document.body.style.filter = `saturate(${saturation.classList.contains("selected") ? 1 : 0})`;
-      this.document.body.style.backdropFilter = `saturate(${saturation.classList.contains("selected") ? 1 : 0})`;
-    });
   });
 
   let barButtons = this.document.querySelectorAll(".options-bar *");

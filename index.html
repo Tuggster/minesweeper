@@ -299,20 +299,49 @@
       }
 
       function keyPressed() {
-        if (keyCode === 32) {
-          let mX = Math.floor((mouseX - border) / cellSize);
-          let mY = Math.floor((mouseY - headerSize - border) / cellSize);
-          let cell = game.grid[mX + mY * game.width];
-
-          if (!cell.revealed) {
-            game.flagCell(mX, mY);
-          }
-        } else if (keyCode === 189) {
+        if (keyCode === 189) {
           game.calculateCellSizes(cellSize - 5);
           manualSize = true;
         } else if (keyCode === 187) {
           game.calculateCellSizes(cellSize + 5);
           manualSize = true;
+        }
+
+        let mX = Math.floor((mouseX - border) / cellSize);
+        let mY = Math.floor((mouseY - headerSize - border) / cellSize);
+        let cell = game.grid[mX + mY * game.width];
+
+        if (mX < 0 || mX >= game.width || mY < 0 || mY >= game.height) {
+          return;
+        }
+
+        const shortcutsReveal = getPreferenceValue("shortcuts_reveal");
+        const shortcutsFlag = getPreferenceValue("shortcuts_flag");
+        const marksEnabled = getPreferenceValue("marks");
+
+        switch (keyCode) {
+          case 32: {
+            if (!cell.revealed) {
+              game.flagCell(mX, mY);
+            }
+            break;
+          }
+          case 90: {
+            if (!cell.revealed && !cell.flagCell && !cell.marked) {
+              game.revealCell(mX, mY);
+            } else if (cell.revealed && !cell.flagged && !cell.marked && shortcutsReveal) {
+              peekRadius(mX, mY, "reveal", true);
+            }
+            break;
+          }
+          case 88: {
+            if (!cell.revealed) {
+              game.flagCell(mX, mY);
+            } else if (cell.revealed && shortcutsFlag) {
+              peekRadius(mX, mY, "flag", true);
+            }
+            break;
+          }
         }
       }
 
@@ -413,7 +442,7 @@
         }
       }
 
-      function peekRadius(px, py, show) {
+      function peekRadius(px, py, show, hideOverlay = false) {
         let safeCount = 0;
         for (let x = -1; x <= 1; x++) {
           for (let y = -1; y <= 1; y++) {
@@ -444,7 +473,9 @@
 
             if (cell.flagged || cell.marked) safeCount++;
 
-            rect(cX, cY, cellSize);
+            if (!hideOverlay) {
+              rect(cX, cY, cellSize);
+            }
           }
 
           if (show === "reveal" && safeCount == game.grid[px + py * game.width].count) {

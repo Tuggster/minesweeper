@@ -140,6 +140,9 @@ class MinesweeperRound {
 
       val = this.padValue(val, count);
       let numIndex = +val.charAt(i);
+      if (val.charAt(i) === "-") {
+        numIndex = numImages.length - 1;
+      }
       let charImg = numImages[numIndex];
       if (charImg) {
         image(charImg, charX, charY, charWidth, charHeight);
@@ -279,6 +282,11 @@ class MinesweeperRound {
 
   flagCell(x, y) {
     let gCell = this.grid[x + y * this.width];
+
+    if (this.mines - this.flagged <= 0 && !gCell.flagged) {
+      return;
+    }
+
     if (!gCell.revealed) {
       gCell.flagged = !gCell.flagged;
       if (gCell.flagged) {

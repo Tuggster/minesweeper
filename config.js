@@ -1,3 +1,3 @@
-// SERVER_URL = 'https://minesweeper-leaderboard.tuggi.dev';
-SERVER_URL = 'http://localhost:3001';
+SERVER_URL = 'https://minesweeper-leaderboard.tuggi.dev';
+// SERVER_URL = 'http://localhost:3001';
 LOCAL_STORAGE_USERNAME_KEY = 'ms_lb_username';

@@ -23,6 +23,15 @@ window.addEventListener("load", function () {
     });
   });
 
+  const leaderboardCtx = document.querySelector("#leaderboard-ctx");
+
+  const newNode = this.document.createElement("p");
+  const nameFromLs = this.localStorage.getItem(LOCAL_STORAGE_USERNAME_KEY);
+  newNode.innerHTML = getNameButtonText();
+  newNode.addEventListener("click", leaderboardNamePrompt);
+  newNode.id = "leaderboard-ctx-name";
+  leaderboardCtx.appendChild(newNode);
+
   document.querySelector("main").addEventListener("mouseenter", () => {
     hoveringMain = true;
   });

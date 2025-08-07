@@ -14,9 +14,18 @@ const getLeaderboardForDifficulty = async (shouldShow) => {
   }
 };
 
+const getNameButtonText = () => {
+  const nameFromLs = this.localStorage.getItem(LOCAL_STORAGE_USERNAME_KEY);
+  return nameFromLs ? `Change username (${nameFromLs})` : "Set username";
+};
+
 const leaderboardNamePrompt = () => {
   const name = prompt("Enter name for leaderboard!");
   localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, name);
+
+  const leaderboardCtxName = document.querySelector("#leaderboard-ctx-name");
+  leaderboardCtxName.innerHTML = getNameButtonText();
+
   return name;
 };
 
@@ -38,7 +47,7 @@ const uploadToLeaderboard = async () => {
   const payload = {
     difficulty: difficultyHash,
     handle: username,
-    time: time.toFixed(2),
+    time: Number(time.toFixed(2)),
     proof: "imlazy",
   };
 

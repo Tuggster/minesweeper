@@ -73,7 +73,7 @@ const preferences = [
       return value === "true";
     },
     lsKey: LOCAL_STORAGE_SHORTCUTS_REVEAL_KEY,
-    value: false,
+    value: true,
   },
   {
     name: "shortcuts_flag",

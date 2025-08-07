@@ -307,6 +307,10 @@
           if (!cell.revealed) {
             game.flagCell(mX, mY);
           }
+        } else if (keyCode === 189) {
+          game.calculateCellSizes(cellSize - 5);
+        } else if (keyCode === 187) {
+          game.calculateCellSizes(cellSize + 5);
         }
       }
 

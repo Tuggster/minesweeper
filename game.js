@@ -32,7 +32,6 @@ class MinesweeperRound {
 
     let windowGrabberHeight = document.querySelector(".window-header").getBoundingClientRect().height;
     let borderSize = getComputedStyle(document.documentElement).getPropertyValue("--border-size").split("px")[0];
-    // resizeCanvas(width  - borderSize * 2, height - borderSize * 3);
 
     if (trF >= trC) {
       cellSize = (window.innerWidth * 0.9 - borderSize * 2) / (this.width + 1);
@@ -55,7 +54,9 @@ class MinesweeperRound {
   }
 
   initGame() {
-    this.calculateCellSizes();
+    if (cellSize === 0) {
+      this.calculateCellSizes();
+    }
 
     this.grid = Array();
     for (let i = 0; i < this.width * this.height; i++) {

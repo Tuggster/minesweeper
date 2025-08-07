@@ -33,11 +33,12 @@ const getLeaderboardName = () => {
 const uploadToLeaderboard = async () => {
   const username = getLeaderboardName();
   const difficultyHash = createDifficultyHash();
+  const time = game.gameTimer / 1000;
 
   const payload = {
     difficulty: difficultyHash,
     handle: username,
-    time: game.gameTimer / 1000,
+    time: time.toFixed(2),
     proof: "imlazy",
   };
 

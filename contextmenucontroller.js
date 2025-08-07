@@ -35,7 +35,7 @@ window.addEventListener("load", function () {
   const collapseBtn = this.document.getElementById("collapse");
 
   const isCollapsed = this.localStorage.getItem(LOCAL_STORAGE_COLLAPSE_KEY);
-  collapsed = isCollapsed;
+  toggleCollapsed(isCollapsed);
   if (isCollapsed) {
     collapseBtn.classList.add("selected");
   }

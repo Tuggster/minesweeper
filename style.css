@@ -47,7 +47,7 @@ table {
   border-collapse: separate;
   border-spacing: 0;
 
-  padding: 10px;
+  padding: 0px 10px 10px 10px;
 }
 
 .leaderboard-flex h1 {

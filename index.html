@@ -209,6 +209,9 @@
 
       <div id="leaderboard-ctx" name="leaderboard">
         <p onclick="getLeaderboardForDifficulty(true)">View Leaderboard</p>
+        <div class="cmenu-radio optional">
+          <p id="collapse" onRadioToggle="toggleCollapsed">Collapse Best Times</p>
+        </div>
         <hr />
       </div>
     </div>
@@ -371,7 +374,6 @@
         let mX = mouseX - border;
         let mY = mouseY - border;
         if (mX > buttonX && mX < buttonXA && mY > buttonY && mY < buttonYA) {
-          console.log("new game");
           newGame();
         }
       }
@@ -394,8 +396,6 @@
             if (!cell) {
               return;
             }
-
-            console.log("radius");
 
             if (cell.revealed || cell.flagged) {
               fill(0, 255, 0, 50);
@@ -449,7 +449,6 @@
           document.getElementById("customWidth").value = rows;
           document.getElementById("customHeight").value = cols;
           document.getElementById("customMines").value = mines;
-          console.log(rows, cols, mines);
         }
       }
 

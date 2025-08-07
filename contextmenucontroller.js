@@ -6,22 +6,39 @@ window.addEventListener("load", function () {
     let choices = radio.children;
 
     choices.forEach((element) => {
+      element.onRadioToggle = function (selected) {
+        if (element.id === "collapse") {
+          toggleCollapsed(selected); // call your actual function here
+        }
+      };
+
       element.addEventListener("click", function () {
         if (element.classList.contains("selected")) {
           if (radio.classList.contains("optional")) {
             element.classList.remove("selected");
+            element?.onRadioToggle?.(false);
           }
         } else {
           let selected = radio.querySelector(".cmenu-radio .selected");
           if (selected) {
             selected.classList.remove("selected");
+            selected?.onRadioToggle?.(false);
           }
 
+          element?.onRadioToggle?.(true);
           element.classList.add("selected");
         }
       });
     });
   });
+
+  const collapseBtn = this.document.getElementById("collapse");
+
+  const isCollapsed = this.localStorage.getItem(LOCAL_STORAGE_COLLAPSE_KEY);
+  collapsed = isCollapsed;
+  if (isCollapsed) {
+    collapseBtn.classList.add("selected");
+  }
 
   const leaderboardCtx = document.querySelector("#leaderboard-ctx");
 
@@ -53,10 +70,8 @@ window.addEventListener("load", function () {
   let barButtons = this.document.querySelectorAll(".options-bar *");
   barButtons.forEach((button) => {
     let buttonName = button.getAttribute("name");
-    console.log(buttonName);
     let cMenu = this.document.querySelector(`.context-menu > *[name=${buttonName}]`);
     cMenu.style.visibility = "hidden";
-    console.log(cMenu);
 
     let btnPos = button.getBoundingClientRect();
     let menuPos = cMenu.getBoundingClientRect();
@@ -105,7 +120,6 @@ window.addEventListener("load", function () {
           dragging = true;
           startX = event.clientX;
           startY = event.clientY;
-          console.log("started dragging! ", startX, startY, event.clientX, event.clientY);
         } else {
           let diffX = startX - event.clientX;
           let diffY = startY - event.clientY;

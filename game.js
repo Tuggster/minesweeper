@@ -24,7 +24,6 @@ class MinesweeperRound {
 
     this.grid = Array();
     this.initGame();
-    // console.log(screenWidth, screenHeight)
   }
 
   calculateCellSizes(override) {
@@ -145,7 +144,6 @@ class MinesweeperRound {
       if (charImg) {
         image(charImg, charX, charY, charWidth, charHeight);
       } else {
-        console.log(charImg, charX, charY, charWidth, charHeight, numIndex, val, count);
         noLoop();
       }
     }
@@ -303,7 +301,6 @@ class MinesweeperRound {
         rejects++;
         continue;
       }
-      // console.log(i, mI);
 
       if (rejects >= this.mines * 5) break;
     }

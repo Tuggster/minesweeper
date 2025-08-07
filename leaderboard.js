@@ -1,10 +1,21 @@
 let leaderboardData = [];
+let collapsed = false;
+
+const toggleCollapsed = (state) => {
+  collapsed = state;
+  this.localStorage.setItem(LOCAL_STORAGE_COLLAPSE_KEY, collapsed);
+  getLeaderboardForDifficulty(false);
+};
 
 const createDifficultyHash = () => MD5(`${game.width},${game.height},${game.mines}`);
 
 const getLeaderboardForDifficulty = async (shouldShow) => {
   const difficultyHash = createDifficultyHash();
-  const results = await fetch(`${SERVER_URL}/leaderboard/difficulty?difficulty=${difficultyHash}`);
+  const shouldCollapse = collapsed;
+
+  const results = await fetch(
+    `${SERVER_URL}/leaderboard/difficulty?difficulty=${difficultyHash}&collapse=${shouldCollapse}`
+  );
   const body = await results.json();
   leaderboardData = body;
   updateLeaderboard();
@@ -43,12 +54,14 @@ const uploadToLeaderboard = async () => {
   const username = getLeaderboardName();
   const difficultyHash = createDifficultyHash();
   const time = game.gameTimer / 1000;
+  const shouldCollapse = collapsed;
 
   const payload = {
     difficulty: difficultyHash,
     handle: username,
     time: Number(time.toFixed(2)),
     proof: "imlazy",
+    collapse: shouldCollapse,
   };
 
   const headers = new Headers();

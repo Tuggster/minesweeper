@@ -289,12 +289,25 @@
         background(255);
         game.drawGame();
         clickLogic();
+
         if ((!mouseIsPressed || touches.count == 0) && lastClick) {
           buttonLogic();
         }
         lastClick = mouseIsPressed || touches.length != 0;
         pop();
         game.drawHUD();
+      }
+
+      function keyPressed() {
+        if (keyCode === 32) {
+          let mX = Math.floor((mouseX - border) / cellSize);
+          let mY = Math.floor((mouseY - headerSize - border) / cellSize);
+          let cell = game.grid[mX + mY * game.width];
+
+          if (!cell.revealed) {
+            game.flagCell(mX, mY);
+          }
+        }
       }
 
       function clickLogic() {

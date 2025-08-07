@@ -2,7 +2,8 @@ SERVER_URL = 'https://minesweeper-leaderboard.tuggi.dev';
 // SERVER_URL = 'http://localhost:3001';
 LOCAL_STORAGE_USERNAME_KEY = "ms_lb_username";
 LOCAL_STORAGE_COLLAPSE_KEY = "ms_lb_collapsed";
-LOCAL_STORAGE_SHORTCUTS_KEY = "ms_shortcuts_enabled";
+LOCAL_STORAGE_SHORTCUTS_REVEAL_KEY = "ms_shortcuts_reveal_enabled";
+LOCAL_STORAGE_SHORTCUTS_FLAG_KEY = "ms_shortcuts_flag_enabled";
 LOCAL_STORAGE_COLOR_KEY = "ms_color_enabled";
 LOCAL_STORAGE_MARKS_KEY = "ms_marks_enabled";
 
@@ -64,16 +65,28 @@ const preferences = [
     value: false,
   },
   {
-    name: "shortcuts",
+    name: "shortcuts_reveal",
     onChange: (state) => {
-      handleRadioUpdate("shortcuts", state);
+      handleRadioUpdate("shortcuts_reveal", state);
     },
     onLsLoad: (value) => {
       return value === "true";
     },
-    lsKey: LOCAL_STORAGE_SHORTCUTS_KEY,
+    lsKey: LOCAL_STORAGE_SHORTCUTS_REVEAL_KEY,
     value: false,
   },
+  {
+    name: "shortcuts_flag",
+    onChange: (state) => {
+      handleRadioUpdate("shortcuts_flag", state);
+    },
+    onLsLoad: (value) => {
+      return value === "true";
+    },
+    lsKey: LOCAL_STORAGE_SHORTCUTS_FLAG_KEY,
+    value: false,
+  },
+
   {
     name: "marks",
     onChange: (state) => {

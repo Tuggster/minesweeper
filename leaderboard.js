@@ -34,7 +34,10 @@ const getNameButtonText = () => {
 };
 
 const leaderboardNamePrompt = () => {
-  const name = prompt("Enter name for leaderboard!");
+  let name = null;
+  while (!name) {
+    name = prompt("Enter name for leaderboard!");
+  }
   localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, name);
 
   const leaderboardCtxName = document.querySelector("#leaderboard-ctx-name");

@@ -103,6 +103,7 @@
         </div>
         <div class="options-bar">
           <h2 name="game">Game</h2>
+          <h2 name="options">Options</h2>
           <h2 name="help">Help</h2>
           <h2 name="leaderboard">Leaderboard</h2>
         </div>
@@ -189,22 +190,34 @@
           <p id="marks">Marks (?)</p>
         </div>
         <div class="cmenu-radio optional">
-          <p id="shortcuts_reveal">1-click Reveal</p>
-        </div>
-        <div class="cmenu-radio optional">
-          <p id="shortcuts_flag">1-click Flag</p>
-        </div>
-        <div class="cmenu-radio optional">
           <p id="saturation" class="selected">Color</p>
         </div>
         <hr />
         <p onclick="getLeaderboardForDifficulty(true)">Best Times...</p>
         <hr />
+        <p>Exit</p>
+      </div>
+
+      <div name="options">
         <div class="cmenu-radio optional">
-          <p id="guessfree" class="selected">Ensure no guessing</p>
+          <p id="guessfree" class="selected">Guessless Mode</p>
         </div>
         <hr />
-        <p>Exit</p>
+        <div class="cmenu-radio optional">
+          <p id="shortcuts_reveal">1-click Reveal</p>
+        </div>
+        <div class="cmenu-radio optional">
+          <p id="shortcuts_flag">1-click Flag</p>
+        </div>
+        <hr />
+        <div class="shortcut" onclick="increaseSize()">
+          <p>Larger</p>
+          <p>+</p>
+        </div>
+        <div class="shortcut" onclick="decreaseSize()">
+          <p>Smaller</p>
+          <p>-</p>
+        </div>
       </div>
 
       <div name="help">
@@ -305,13 +318,21 @@
         game.drawHUD();
       }
 
+      function increaseSize() {
+        game.calculateCellSizes(cellSize + 5);
+        manualSize = true;
+      }
+
+      function decreaseSize() {
+        game.calculateCellSizes(cellSize - 5);
+        manualSize = true;
+      }
+
       function keyPressed() {
         if (keyCode === 189) {
-          game.calculateCellSizes(cellSize - 5);
-          manualSize = true;
+          decreaseSize();
         } else if (keyCode === 187) {
-          game.calculateCellSizes(cellSize + 5);
-          manualSize = true;
+          increaseSize();
         }
 
         let mX = Math.floor((mouseX - border) / cellSize);

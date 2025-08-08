@@ -125,6 +125,8 @@ table {
   background-color: var(--options-color);
   padding: 0px 1em 0px 1em;
   box-sizing: border-box;
+
+  overflow: hidden;
 }
 
 .options-bar h2 {

@@ -1,4 +1,4 @@
-SERVER_URL = 'https://minesweeper-leaderboard.tuggi.dev';
+SERVER_URL = "https://minesweeper-leaderboard.tuggi.dev";
 // SERVER_URL = 'http://localhost:3001';
 LOCAL_STORAGE_USERNAME_KEY = "ms_lb_username";
 LOCAL_STORAGE_COLLAPSE_KEY = "ms_lb_collapsed";
@@ -8,7 +8,7 @@ LOCAL_STORAGE_COLOR_KEY = "ms_color_enabled";
 LOCAL_STORAGE_MARKS_KEY = "ms_marks_enabled";
 LOCAL_STORAGE_GUESS_FREE_KEY = "ms_guess_free";
 
-LEADERBOARD_ENABLED = false;
+LEADERBOARD_ENABLED = true;
 
 // name
 // onChange ==> (state) => ...

@@ -10,7 +10,7 @@ const getCollapsed = () => {
   return this.localStorage.getItem(LOCAL_STORAGE_COLLAPSE_KEY) === "true";
 };
 
-const createDifficultyHash = () => MD5(`${game.width},${game.height},${game.mines}`);
+const createDifficultyHash = () => MD5(`${game.width},${game.height},${game.mines}${game.guessFree ? "noguess" : ""}`);
 
 const getLeaderboardForDifficulty = async (shouldShow) => {
   const difficultyHash = createDifficultyHash();
@@ -57,6 +57,10 @@ const getLeaderboardName = () => {
 };
 
 const uploadToLeaderboard = async () => {
+  if (!LEADERBOARD_ENABLED) {
+    throw new Error("leaderboard disabled");
+  }
+
   const username = getLeaderboardName();
   const difficultyHash = createDifficultyHash();
   const time = game.gameTimer / 1000;

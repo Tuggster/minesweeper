@@ -6,6 +6,9 @@ LOCAL_STORAGE_SHORTCUTS_REVEAL_KEY = "ms_shortcuts_reveal_enabled";
 LOCAL_STORAGE_SHORTCUTS_FLAG_KEY = "ms_shortcuts_flag_enabled";
 LOCAL_STORAGE_COLOR_KEY = "ms_color_enabled";
 LOCAL_STORAGE_MARKS_KEY = "ms_marks_enabled";
+LOCAL_STORAGE_GUESS_FREE_KEY = "ms_guess_free";
+
+LEADERBOARD_ENABLED = false;
 
 // name
 // onChange ==> (state) => ...
@@ -86,7 +89,6 @@ const preferences = [
     lsKey: LOCAL_STORAGE_SHORTCUTS_FLAG_KEY,
     value: false,
   },
-
   {
     name: "marks",
     onChange: (state) => {
@@ -111,6 +113,18 @@ const preferences = [
     },
     lsKey: LOCAL_STORAGE_COLOR_KEY,
     value: true,
+  },
+  {
+    name: "guessfree",
+    onChange: (state) => {
+      handleRadioUpdate("guessfree", state);
+      newGame();
+    },
+    onLsLoad: (value) => {
+      return value === "true";
+    },
+    lsKey: LOCAL_STORAGE_GUESS_FREE_KEY,
+    value: false,
   },
 ];
 

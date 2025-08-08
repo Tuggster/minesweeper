@@ -85,6 +85,7 @@
     <script src="md5.js"></script>
     <script src="leaderboard.js"></script>
     <script src="config.js"></script>
+    <script src="solver.js"></script>
 
     <!-- <div class="btn-container" style="width:100%">
       <img src="../imgs/face1.png" alt="" id="resetButton" class="vertical-center play-button" onclick="newGame()">
@@ -199,6 +200,10 @@
         <hr />
         <p onclick="getLeaderboardForDifficulty(true)">Best Times...</p>
         <hr />
+        <div class="cmenu-radio optional">
+          <p id="guessfree" class="selected">Ensure no guessing</p>
+        </div>
+        <hr />
         <p>Exit</p>
       </div>
 
@@ -262,6 +267,8 @@
         canvasHTML = document.getElementById("defaultCanvas0"); //createCanvas(windowWidth - border*2, windowHeight - border*2);
         ellipseMode(CENTER);
 
+        const guessFree = localStorage.getItem("LOCAL_STORAGE_GUESS_FREE_KEY") === "true";
+
         let context = canvasElement.getContext("2d");
         context.mozImageSmoothingEnabled = false;
         context.webkitImageSmoothingEnabled = false;
@@ -278,7 +285,7 @@
         bombColors.push(color(128, 128, 128));
         screenWidth = windowWidth - border * 2;
         screenHeight = windowHeight - border * 2 - headerSize;
-        game = new MinesweeperRound(rows, cols, mines);
+        game = new MinesweeperRound(rows, cols, mines, guessFree);
         setCanvasSize(cellSize * game.width + border * 2, cellSize * game.height + headerSize + border * 2);
         touch = isMobile();
       }
@@ -525,7 +532,10 @@
         let windowGrabberHeight = document.querySelector(".window-header").getBoundingClientRect().height;
         screenWidth = windowWidth - border * 2;
         screenHeight = windowHeight - border * 2 - headerSize - 50;
-        game = new MinesweeperRound(rows, cols, mines);
+
+        const guessFree = getPreferenceValue("guessfree");
+
+        game = new MinesweeperRound(rows, cols, mines, guessFree);
         setCanvasSize(cellSize * game.width + border * 2, cellSize * game.height + headerSize + border * 2);
         getLeaderboardForDifficulty(false);
       }

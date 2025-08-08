@@ -13,15 +13,19 @@ let won = false;
 let buttonX, buttonY, buttonW;
 
 class MinesweeperRound {
-  constructor(width, height, mines) {
+  constructor(width, height, mines, guessFree) {
     this.mines = mines;
     this.flagged = 0;
     this.width = width;
     this.height = height;
     this.hasStart = false;
+    this.guessFree = guessFree;
     this.gameTimer = 0;
     gameOver = false;
     won = false;
+
+    this.startX = 0;
+    this.startY = 0;
 
     this.grid = Array();
     this.initGame();
@@ -85,23 +89,57 @@ class MinesweeperRound {
   }
 
   reserveStart(sX, sY) {
-    for (let x = -startReserved; x <= startReserved; x++) {
-      for (let y = -startReserved; y <= startReserved; y++) {
-        let gX = sX + x;
-        let gY = sY + y;
-        if (gX < 0 || gX >= game.width || gY < 0 || gY >= game.height) {
-          continue;
-        }
-        this.grid[gX + gY * this.width].reserved = true;
-      }
-    }
+    clearStartingArea(this.grid, this.width, sX, sY);
     this.hasStart = true;
+    this.startX = sX;
+    this.startY = sY;
   }
 
-  revealCell(x, y) {
+  applyGame = (grid) => {
+    this.grid = grid.map((cell) => {
+      return new Cell(cell.x, cell.y, cell.mine);
+    });
+  };
+
+  startGame = (x, y) => {
+    clearStartingArea(this.grid, this.width, x, y);
+    seedBoard(this.mines, this.grid);
+    this.reserveStart(x, y);
+  };
+
+  startGameWithGuessless = async (x, y) => {
+    let success = false;
+
+    let testGrid = Array();
+    let attempts = 0;
+    while (!success) {
+      testGrid = Array(this.grid.length);
+      for (let i = 0; i < this.width * this.height; i++) {
+        testGrid[i] = new Cell(i % this.width, Math.floor(i / this.width), false);
+      }
+
+      clearStartingArea(testGrid, this.width, x, y);
+      seedBoard(this.mines, testGrid);
+      const results = await validateBoardFromStart(testGrid, this.width, this.height, this.startX, this.startY);
+      success = results.success;
+      attempts++;
+    }
+
+    console.log(`Found guess-free board after ${attempts} attempts`);
+    this.guessFree = true;
+
+    this.applyGame(testGrid);
+    this.reserveStart(x, y);
+    calculateNumbers(this.grid);
+  };
+
+  async revealCell(x, y) {
     if (!this.hasStart) {
-      this.reserveStart(x, y);
-      this.seedGame();
+      if (this.guessFree) {
+        await this.startGameWithGuessless(x, y);
+      } else {
+        this.startGame(x, y);
+      }
     }
     let gCell = this.grid[x + y * this.width];
     if (!gCell.flagged) {
@@ -322,27 +360,6 @@ class MinesweeperRound {
     }
   }
 
-  seedGame() {
-    let rejects = 0;
-    for (let i = 0; i < this.mines; 0) {
-      let mI = Math.floor(Math.random() * this.grid.length);
-
-      if (this.grid[mI].count >= 0 && !this.grid[mI].reserved && !this.grid[mI].mine) {
-        this.grid[mI].mine = true;
-        i++;
-      } else {
-        rejects++;
-        continue;
-      }
-
-      if (rejects >= this.mines * 5) break;
-    }
-
-    for (let i = 0; i < this.grid.length; i++) {
-      this.grid[i].calculateNearby();
-    }
-  }
-
   drawGame() {
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
@@ -361,3 +378,41 @@ function isMobile() {
     return false;
   }
 }
+
+const clearStartingArea = (board, width, sX, sY) => {
+  for (let x = -startReserved; x <= startReserved; x++) {
+    for (let y = -startReserved; y <= startReserved; y++) {
+      let gX = sX + x;
+      let gY = sY + y;
+      if (gX < 0 || gX >= game.width || gY < 0 || gY >= game.height) {
+        continue;
+      }
+      board[gX + gY * width].reserved = true;
+    }
+  }
+};
+
+const calculateNumbers = (grid) => {
+  for (let i = 0; i < grid.length; i++) {
+    grid[i].calculateNearby();
+  }
+};
+
+const seedBoard = (mines, grid) => {
+  let rejects = 0;
+  for (let i = 0; i < mines; 0) {
+    let mI = Math.floor(Math.random() * grid.length);
+
+    if (grid[mI].count >= 0 && !grid[mI].reserved && !grid[mI].mine) {
+      grid[mI].mine = true;
+      i++;
+    } else {
+      rejects++;
+      continue;
+    }
+
+    if (rejects >= mines * 5) break;
+  }
+
+  calculateNumbers(grid);
+};

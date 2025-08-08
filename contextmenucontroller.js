@@ -28,6 +28,10 @@ window.addEventListener("load", function () {
             setPreferenceValue("marks", selected);
             break;
           }
+          case "guessfree": {
+            setPreferenceValue("guessfree", selected);
+            break;
+          }
         }
       };
 

@@ -146,6 +146,7 @@ MINESWEEPER_ID = "minesweeper";
 
 const WINDOW_DEFAULTS = {
   [MINESWEEPER_ID]: {
-    visibility: true,
+    open: true,
+    zIndex: WINDOW_Z_INDEX_STACK_START,
   },
 };

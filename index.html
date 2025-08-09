@@ -79,6 +79,9 @@
     <script src="config.js"></script>
     <script src="solver.js"></script>
     <script src="draggables.js"></script>
+    <script src="desktop.js"></script>
+
+    <div class="selection-box"></div>
 
     <div class="desktop">
       <div class="icon" id="desktop-open-minesweeper">
@@ -326,13 +329,15 @@
         screenHeight = windowHeight - border * 2 - headerSize;
         game = new MinesweeperRound(rows, cols, mines, guessFree);
         setCanvasSize(cellSize * game.width + border * 2, cellSize * game.height + headerSize + border * 2);
+        translate(border, border);
+        game.drawGame();
+
         touch = isMobile();
       }
 
       function draw() {
         push();
         translate(border, border);
-        background(255);
         game.drawGame();
         clickLogic();
 
@@ -588,6 +593,7 @@
         const guessFree = getPreferenceValue("guessfree");
 
         game = new MinesweeperRound(rows, cols, mines, guessFree);
+        game.drawGame();
         setCanvasSize(cellSize * game.width + border * 2, cellSize * game.height + headerSize + border * 2);
         getLeaderboardForDifficulty(false);
       }

@@ -88,10 +88,11 @@ window.addEventListener("load", () => {
     const defaults = WINDOW_DEFAULTS[element.id];
 
     return {
+      open: false,
       id: element.id,
       element,
       zIndex: index,
-      open: defaults?.visibility ?? false,
+      ...defaults,
     };
   });
 
@@ -102,9 +103,9 @@ window.addEventListener("load", () => {
         dragTarget = draggable.element;
       }
     });
-
-    processDraggable(draggable);
   });
+
+  processDraggables();
 });
 
 const setWindowVisibility = (id, visibility) => {
@@ -118,6 +119,8 @@ const processDraggables = () => {
   draggables.forEach((d) => {
     processDraggable(d);
   });
+
+  applyZIndicies();
 };
 
 const processDraggable = (draggable) => {

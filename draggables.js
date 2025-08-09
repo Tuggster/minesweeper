@@ -12,8 +12,6 @@ const promoteZIndex = (id) => {
     draggable.zIndex = draggable.zIndex - 1;
   });
 
-  console.log({ id, elementIndex, draggables });
-
   // Raise Z-index of this element to top of stack
   draggables[elementIndex].zIndex = draggables.length - 1;
 
@@ -21,7 +19,6 @@ const promoteZIndex = (id) => {
 };
 
 const findWindowByClickAndPromote = (element) => {
-  console.log(element);
   if (!element.parentElement) {
     return;
   }
@@ -35,7 +32,6 @@ const findWindowByClickAndPromote = (element) => {
     return;
   }
 
-  console.log(classList);
   promoteZIndex(element.id);
 };
 
@@ -89,10 +85,13 @@ window.addEventListener("mouseup", () => {
 
 window.addEventListener("load", () => {
   draggables = Array.from(document.querySelectorAll(".draggable")).map((element, index) => {
+    const defaults = WINDOW_DEFAULTS[element.id];
+
     return {
       id: element.id,
       element,
       zIndex: index,
+      open: defaults?.visibility ?? false,
     };
   });
 
@@ -103,8 +102,31 @@ window.addEventListener("load", () => {
         dragTarget = draggable.element;
       }
     });
+
+    processDraggable(draggable);
   });
 });
+
+const setWindowVisibility = (id, visibility) => {
+  const draggable = draggables.find((d) => d.id === id);
+  draggable.open = visibility;
+
+  processDraggables();
+};
+
+const processDraggables = () => {
+  draggables.forEach((d) => {
+    processDraggable(d);
+  });
+};
+
+const processDraggable = (draggable) => {
+  if (draggable.open) {
+    draggable.element.style.visibility = "visible";
+  } else {
+    draggable.element.style.visibility = "hidden";
+  }
+};
 
 let dragging = false;
 let startX = 0;

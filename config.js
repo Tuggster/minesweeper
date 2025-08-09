@@ -20,6 +20,8 @@ WINDOW_Z_INDEX_STACK_START = 10;
 // local storage key
 // value
 
+// State Management
+
 const setPreferenceValue = (key, value) => {
   const pref = preferences.find((p) => p.name === key);
 
@@ -136,3 +138,14 @@ const preferences = [
 document.addEventListener("DOMContentLoaded", () => {
   initPrefValuesFromLs();
 });
+
+// Window Defaults
+
+LEADERBOARD_ID = "leaderboard";
+MINESWEEPER_ID = "minesweeper";
+
+const WINDOW_DEFAULTS = {
+  [MINESWEEPER_ID]: {
+    visibility: true,
+  },
+};

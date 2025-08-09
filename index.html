@@ -94,7 +94,7 @@
     <main class="game-container draggable" id="minesweeper">
       <div class="window-header">
         <div class="title-bar">
-          <button>
+          <button onclick="setWindowVisibility(MINESWEEPER_ID, false)">
             <div class="minimize-button"></div>
           </button>
           <h1>Minesweeper</h1>
@@ -119,7 +119,7 @@
     >
       <div class="window-header">
         <div class="title-bar">
-          <button onclick="hideLeaderboard()">
+          <button onclick="setWindowVisibility(LEADERBOARD_ID, false)">
             <div class="minimize-button"></div>
           </button>
           <h1>Leaderboard</h1>

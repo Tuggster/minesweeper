@@ -42,16 +42,6 @@
       touch-action: manipulation;
     }
 
-    ::selection {
-      color: none;
-      background: none;
-    }
-    /* For Mozilla Firefox */
-    ::-moz-selection {
-      color: none;
-      background: none;
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -75,6 +65,8 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="scrollbar.css" />
+    <link rel="stylesheet" href="desktop.css" />
+    <link rel="stylesheet" href="notepad.css" />
     <title>Sweep</title>
   </head>
   <body ondragstart="return false;" ondrop="return false;" oncontextmenu="return false;">
@@ -86,6 +78,18 @@
     <script src="leaderboard.js"></script>
     <script src="config.js"></script>
     <script src="solver.js"></script>
+    <script src="draggables.js"></script>
+
+    <div class="desktop">
+      <div class="icon">
+        <img src="desktop/minesweeper.png" alt="" />
+        <p>Minesweeper</p>
+      </div>
+      <div class="icon">
+        <img src="desktop/notepad.png" alt="" />
+        <p>Notepad</p>
+      </div>
+    </div>
 
     <main class="game-container draggable">
       <div class="window-header">
@@ -167,6 +171,27 @@
         </div>
         <button class="accept">OK</button>
       </div>
+    </div>
+
+    <div class="game-container notepad draggable">
+      <div class="window-header">
+        <div class="title-bar">
+          <button onclick="hideLeaderboard()">
+            <div class="minimize-button"></div>
+          </button>
+          <h1>Notepad - [untitled]</h1>
+          <button>
+            <div class="down-button">◤</div>
+          </button>
+        </div>
+        <div class="options-bar">
+          <h2 name="np-file">File</h2>
+          <h2 name="np-edit">Edit</h2>
+          <h2 name="np-search">Search</h2>
+          <h2 name="np-help">Help</h2>
+        </div>
+      </div>
+      <textarea>hello vro</textarea>
     </div>
 
     <div class="context-menu">

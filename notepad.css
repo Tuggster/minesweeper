@@ -1,0 +1,17 @@
+.notepad textarea {
+  font-family: msSansSerif;
+  vertical-align: top;
+
+  width: 450px;
+  height: 300px;
+  resize: none;
+  overflow: scroll;
+
+  padding: 5px;
+
+  font-size: 20px;
+}
+
+.notepad textarea:focus {
+  outline: none;
+}

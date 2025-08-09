@@ -66,6 +66,10 @@ table {
 
 .game-container {
   position: absolute;
+
+  top: 0px;
+  left: 0px;
+
   width: fit-content;
   height: fit-content;
 
@@ -103,6 +107,8 @@ table {
 .title-bar {
   justify-content: space-between;
   color: var(--options-color);
+
+  user-select: none;
 }
 
 .title-bar button {
@@ -127,6 +133,8 @@ table {
   box-sizing: border-box;
 
   overflow: hidden;
+
+  user-select: none;
 }
 
 .options-bar h2 {
@@ -153,6 +161,8 @@ table {
   background-color: var(--cmenu-color);
   outline: 1px outset;
   margin: 0.5px;
+
+  z-index: 11;
 }
 
 .context-menu {
@@ -161,6 +171,9 @@ table {
 
   font-family: msSansSerif;
   font-size: 20px;
+  z-index: 11;
+
+  user-select: none;
 }
 
 .context-menu hr {
@@ -225,6 +238,8 @@ table {
   justify-content: center;
   padding: 3em 0px 3em 0px;
   font-family: msSansSerif;
+
+  user-select: none;
 }
 
 .custom-container {

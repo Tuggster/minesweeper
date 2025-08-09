@@ -162,7 +162,7 @@ table {
   outline: 1px outset;
   margin: 0.5px;
 
-  z-index: 11;
+  z-index: 100;
 }
 
 .context-menu {
@@ -171,7 +171,7 @@ table {
 
   font-family: msSansSerif;
   font-size: 20px;
-  z-index: 11;
+  z-index: 100;
 
   user-select: none;
 }

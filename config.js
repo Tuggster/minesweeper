@@ -13,8 +13,7 @@ LOCAL_STORAGE_MARKS_KEY = "ms_marks_enabled";
 LOCAL_STORAGE_GUESS_FREE_KEY = "ms_guess_free";
 
 // Window Management
-ACTIVE_WINDOW_Z_INDEX = 10;
-INACTIVE_WINDOW_Z_INDEX = 9;
+WINDOW_Z_INDEX_STACK_START = 10;
 
 // name
 // onChange ==> (state) => ...

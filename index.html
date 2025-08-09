@@ -81,17 +81,17 @@
     <script src="draggables.js"></script>
 
     <div class="desktop">
-      <div class="icon">
+      <div class="icon" id="desktop-open-minesweeper">
         <img src="desktop/minesweeper.png" alt="" />
         <p>Minesweeper</p>
       </div>
-      <div class="icon">
+      <div class="icon" id="desktop-open-notepad">
         <img src="desktop/notepad.png" alt="" />
         <p>Notepad</p>
       </div>
     </div>
 
-    <main class="game-container draggable">
+    <main class="game-container draggable" id="minesweeper">
       <div class="window-header">
         <div class="title-bar">
           <button>
@@ -112,7 +112,11 @@
       <canvas id="defaultCanvas0" width="300" height="300"></canvas>
     </main>
 
-    <div class="game-container leaderboard draggable" style="max-width: 380px; width: 100%; visibility: hidden">
+    <div
+      class="game-container leaderboard draggable"
+      id="leaderboard"
+      style="max-width: 380px; width: 100%; visibility: hidden"
+    >
       <div class="window-header">
         <div class="title-bar">
           <button onclick="hideLeaderboard()">
@@ -141,7 +145,7 @@
       </div>
     </div>
 
-    <div class="game-container customize" style="width: 50%">
+    <div class="game-container customize" id="customize" style="width: 50%">
       <div class="window-header">
         <div class="title-bar">
           <button></button>
@@ -173,10 +177,10 @@
       </div>
     </div>
 
-    <div class="game-container notepad draggable">
+    <div class="game-container notepad draggable" id="notepad">
       <div class="window-header">
         <div class="title-bar">
-          <button onclick="hideLeaderboard()">
+          <button>
             <div class="minimize-button"></div>
           </button>
           <h1>Notepad - [untitled]</h1>
@@ -438,6 +442,11 @@
             } else if (lastClick == 1 && mouseIsPressed == 0) {
               if (mouseButton === LEFT && !keyIsDown(SHIFT)) {
                 let cell = game.grid[xStart + yStart * game.width];
+
+                if (!cell) {
+                  return;
+                }
+
                 game.peekCell(mX, mY);
                 if (!cell.revealed && !cell.marked) {
                   game.revealCell(mX, mY);

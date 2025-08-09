@@ -92,6 +92,10 @@ window.addEventListener("load", function () {
     let menuPos = cMenu.getBoundingClientRect();
 
     button.addEventListener("mouseenter", function () {
+      if (dragging) {
+        return;
+      }
+
       btnPos = button.getBoundingClientRect();
       menuPos = cMenu.getBoundingClientRect();
 

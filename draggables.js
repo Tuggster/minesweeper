@@ -1,4 +1,51 @@
 let dragTarget = undefined;
+let draggables = new Array();
+
+const promoteZIndex = (id) => {
+  // Shuffle everyone who was above me, down 1.
+  draggables = draggables.sort((a, b) => {
+    return a.zIndex - b.zIndex;
+  });
+  const elementIndex = draggables.findIndex((d) => d.id === id);
+
+  draggables.slice(elementIndex + 1).forEach((draggable) => {
+    draggable.zIndex = draggable.zIndex - 1;
+  });
+
+  console.log({ id, elementIndex, draggables });
+
+  // Raise Z-index of this element to top of stack
+  draggables[elementIndex].zIndex = draggables.length - 1;
+
+  applyZIndicies();
+};
+
+const findWindowByClickAndPromote = (element) => {
+  console.log(element);
+  if (!element.parentElement) {
+    return;
+  }
+
+  const classList = element.classList;
+  if (!classList.contains("draggable")) {
+    return findWindowByClickAndPromote(element.parentElement);
+  }
+
+  if (!element.id) {
+    return;
+  }
+
+  console.log(classList);
+  promoteZIndex(element.id);
+};
+
+const applyZIndicies = () => {
+  draggables.forEach((d) => {
+    targetIndex = d.zIndex + WINDOW_Z_INDEX_STACK_START;
+
+    d.element.style.zIndex = targetIndex;
+  });
+};
 
 // Handle ongoing drags
 window.addEventListener("mousemove", () => {
@@ -7,11 +54,7 @@ window.addEventListener("mousemove", () => {
       dragging = true;
       startX = event.clientX;
       startY = event.clientY;
-      //   elementParentStyle.zIndex = ACTIVE_WINDOW_Z_INDEX;
-      draggables.forEach((d) => {
-        d.style.zIndex = INACTIVE_WINDOW_Z_INDEX;
-      });
-      dragTarget.style.zIndex = ACTIVE_WINDOW_Z_INDEX;
+      promoteZIndex(dragTarget.id);
     } else {
       let diffX = startX - event.clientX;
       let diffY = startY - event.clientY;
@@ -28,6 +71,16 @@ window.addEventListener("mousemove", () => {
   }
 });
 
+window.addEventListener("click", (event) => {
+  const target = event.target;
+
+  if (!target) {
+    return;
+  }
+
+  findWindowByClickAndPromote(target);
+});
+
 // Stop drag if in progress
 window.addEventListener("mouseup", () => {
   dragTarget = undefined;
@@ -35,12 +88,19 @@ window.addEventListener("mouseup", () => {
 });
 
 window.addEventListener("load", () => {
-  let draggables = document.querySelectorAll(".draggable");
+  draggables = Array.from(document.querySelectorAll(".draggable")).map((element, index) => {
+    return {
+      id: element.id,
+      element,
+      zIndex: index,
+    };
+  });
+
   draggables.forEach((draggable) => {
-    let header = draggable.children[0].children[0];
+    let header = draggable.element.children[0].children[0];
     header.addEventListener("mousedown", (event) => {
       if (event.buttons & 1) {
-        dragTarget = draggable;
+        dragTarget = draggable.element;
       }
     });
   });

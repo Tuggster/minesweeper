@@ -1,0 +1,59 @@
+/* Desktop */
+
+.desktop {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  padding: 1.5rem;
+  z-index: 0;
+
+  gap: 2rem;
+
+  user-select: none;
+}
+
+/* Icons */
+
+.icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 75px;
+  height: 75px;
+}
+
+.icon > p {
+  color: black;
+
+  background-color: #d2d2d2;
+  padding: 2px;
+
+  font-family: msSansSerif;
+  font-size: 13px;
+}
+
+.icon.selected > p {
+  color: white;
+  background-color: #36b2ff;
+}
+
+.icon > img {
+  aspect-ratio: 1;
+  width: 100%;
+
+  image-rendering: pixelated;
+}
+
+/* Selection Box */
+
+.selection-box {
+  background-color: #0078d799;
+  position: absolute;
+
+  border: 2px solid #0078d7;
+  left: 500px;
+
+  z-index: 5;
+}

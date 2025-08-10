@@ -75,13 +75,27 @@ window.addEventListener("load", function () {
   let barButtons = this.document.querySelectorAll(".options-bar *");
   barButtons.forEach((button) => {
     let buttonName = button.getAttribute("name");
+
+    if (!buttonName || buttonName === "") {
+      return;
+    }
+
     let cMenu = this.document.querySelector(`.context-menu > *[name=${buttonName}]`);
+
+    if (!cMenu) {
+      return;
+    }
+
     cMenu.style.visibility = "hidden";
 
     let btnPos = button.getBoundingClientRect();
     let menuPos = cMenu.getBoundingClientRect();
 
     button.addEventListener("mouseenter", function () {
+      if (dragging) {
+        return;
+      }
+
       btnPos = button.getBoundingClientRect();
       menuPos = cMenu.getBoundingClientRect();
 
@@ -115,36 +129,4 @@ window.addEventListener("load", function () {
       newGame();
     });
   });
-
-  let draggables = document.querySelectorAll(".draggable");
-  draggables.forEach((draggable) => {
-    let header = draggable.children[0].children[0];
-    header.addEventListener("mousemove", (event) => {
-      if (event.buttons & 1) {
-        if (!dragging) {
-          dragging = true;
-          startX = event.clientX;
-          startY = event.clientY;
-        } else {
-          let diffX = startX - event.clientX;
-          let diffY = startY - event.clientY;
-
-          let newLeft = draggable.style.left.split("px")[0] - diffX;
-          let newTop = draggable.style.top.split("px")[0] - diffY;
-
-          draggable.style.left = `${newLeft}px`;
-          draggable.style.top = `${newTop}px`;
-
-          startX = event.clientX;
-          startY = event.clientY;
-        }
-      } else {
-        dragging = false;
-      }
-    });
-  });
 });
-
-let dragging = false;
-let startX = 0;
-let startY = 0;

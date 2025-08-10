@@ -42,16 +42,6 @@
       touch-action: manipulation;
     }
 
-    ::selection {
-      color: none;
-      background: none;
-    }
-    /* For Mozilla Firefox */
-    ::-moz-selection {
-      color: none;
-      background: none;
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -75,7 +65,11 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="scrollbar.css" />
-    <title>Sweep</title>
+    <link rel="stylesheet" href="desktop.css" />
+    <link rel="stylesheet" href="notepad.css" />
+    <link rel="icon" type="image/x-icon" href="desktop/minesweeper.png" />
+
+    <title>Minesweeper</title>
   </head>
   <body ondragstart="return false;" ondrop="return false;" oncontextmenu="return false;">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
@@ -86,11 +80,26 @@
     <script src="leaderboard.js"></script>
     <script src="config.js"></script>
     <script src="solver.js"></script>
+    <script src="draggables.js"></script>
+    <script src="desktop.js"></script>
 
-    <main class="game-container draggable">
+    <div class="selection-box"></div>
+
+    <div class="desktop">
+      <div class="icon" id="desktop-open-minesweeper">
+        <img src="desktop/minesweeper.png" alt="" />
+        <p>Minesweeper</p>
+      </div>
+      <div class="icon" id="desktop-open-notepad">
+        <img src="desktop/notepad.png" alt="" />
+        <p>Notepad</p>
+      </div>
+    </div>
+
+    <main class="game-container draggable" id="minesweeper">
       <div class="window-header">
         <div class="title-bar">
-          <button>
+          <button onclick="setWindowVisibility(MINESWEEPER_ID, false)">
             <div class="minimize-button"></div>
           </button>
           <h1>Minesweeper</h1>
@@ -108,10 +117,14 @@
       <canvas id="defaultCanvas0" width="300" height="300"></canvas>
     </main>
 
-    <div class="game-container leaderboard draggable" style="max-width: 380px; width: 100%; visibility: hidden">
+    <div
+      class="game-container leaderboard draggable"
+      id="leaderboard"
+      style="max-width: 380px; width: 100%; visibility: hidden"
+    >
       <div class="window-header">
         <div class="title-bar">
-          <button onclick="hideLeaderboard()">
+          <button onclick="setWindowVisibility(LEADERBOARD_ID, false)">
             <div class="minimize-button"></div>
           </button>
           <h1>Leaderboard</h1>
@@ -137,7 +150,7 @@
       </div>
     </div>
 
-    <div class="game-container customize" style="width: 50%">
+    <div class="game-container customize" id="customize" style="width: 50%">
       <div class="window-header">
         <div class="title-bar">
           <button></button>
@@ -167,6 +180,27 @@
         </div>
         <button class="accept">OK</button>
       </div>
+    </div>
+
+    <div class="game-container notepad draggable" id="notepad">
+      <div class="window-header">
+        <div class="title-bar">
+          <button onclick="setWindowVisibility(NOTEPAD_ID, false)">
+            <div class="minimize-button"></div>
+          </button>
+          <h1>Notepad - [untitled]</h1>
+          <button>
+            <div class="down-button">◤</div>
+          </button>
+        </div>
+        <div class="options-bar">
+          <h2 name="np-file">File</h2>
+          <h2 name="np-edit">Edit</h2>
+          <h2 name="np-search">Search</h2>
+          <h2 name="np-help">Help</h2>
+        </div>
+      </div>
+      <textarea>hello vro</textarea>
     </div>
 
     <div class="context-menu">
@@ -264,6 +298,7 @@
       }
 
       function setup() {
+        p5init = true;
         let canvasHTML = document.getElementById("defaultCanvas0"); //createCanvas(windowWidth - border*2, windowHeight - border*2);
         canvasHTML = createCanvas(windowWidth - border * 2, windowHeight - border * 2);
         document.getElementById("defaultCanvas0").remove();
@@ -297,13 +332,15 @@
         screenHeight = windowHeight - border * 2 - headerSize;
         game = new MinesweeperRound(rows, cols, mines, guessFree);
         setCanvasSize(cellSize * game.width + border * 2, cellSize * game.height + headerSize + border * 2);
+        translate(border, border);
+        game.drawGame();
+
         touch = isMobile();
       }
 
       function draw() {
         push();
         translate(border, border);
-        background(255);
         game.drawGame();
         clickLogic();
 
@@ -413,6 +450,11 @@
             } else if (lastClick == 1 && mouseIsPressed == 0) {
               if (mouseButton === LEFT && !keyIsDown(SHIFT)) {
                 let cell = game.grid[xStart + yStart * game.width];
+
+                if (!cell) {
+                  return;
+                }
+
                 game.peekCell(mX, mY);
                 if (!cell.revealed && !cell.marked) {
                   game.revealCell(mX, mY);
@@ -546,6 +588,10 @@
       }
 
       function newGame() {
+        if (!p5init) {
+          return;
+        }
+
         let canvasHTML = document.getElementById("defaultCanvas0");
         let windowGrabberHeight = document.querySelector(".window-header").getBoundingClientRect().height;
         screenWidth = windowWidth - border * 2;
@@ -554,6 +600,7 @@
         const guessFree = getPreferenceValue("guessfree");
 
         game = new MinesweeperRound(rows, cols, mines, guessFree);
+        game.drawGame();
         setCanvasSize(cellSize * game.width + border * 2, cellSize * game.height + headerSize + border * 2);
         getLeaderboardForDifficulty(false);
       }

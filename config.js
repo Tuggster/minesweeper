@@ -1,5 +1,9 @@
+// API
 SERVER_URL = "https://minesweeper-leaderboard.tuggi.dev";
 // SERVER_URL = 'http://localhost:3001';
+LEADERBOARD_ENABLED = true;
+
+// Local Storage
 LOCAL_STORAGE_USERNAME_KEY = "ms_lb_username";
 LOCAL_STORAGE_COLLAPSE_KEY = "ms_lb_collapsed";
 LOCAL_STORAGE_SHORTCUTS_REVEAL_KEY = "ms_shortcuts_reveal_enabled";
@@ -8,12 +12,15 @@ LOCAL_STORAGE_COLOR_KEY = "ms_color_enabled";
 LOCAL_STORAGE_MARKS_KEY = "ms_marks_enabled";
 LOCAL_STORAGE_GUESS_FREE_KEY = "ms_guess_free";
 
-LEADERBOARD_ENABLED = true;
+// Window Management
+WINDOW_Z_INDEX_STACK_START = 10;
 
 // name
 // onChange ==> (state) => ...
 // local storage key
 // value
+
+// State Management
 
 const setPreferenceValue = (key, value) => {
   const pref = preferences.find((p) => p.name === key);
@@ -131,3 +138,31 @@ const preferences = [
 document.addEventListener("DOMContentLoaded", () => {
   initPrefValuesFromLs();
 });
+
+// Window Defaults
+
+LEADERBOARD_ID = "leaderboard";
+MINESWEEPER_ID = "minesweeper";
+NOTEPAD_ID = "notepad";
+
+const WINDOW_DEFAULTS = {
+  [MINESWEEPER_ID]: {
+    open: true,
+    zIndex: WINDOW_Z_INDEX_STACK_START,
+  },
+};
+
+// Desktop Actions
+
+const DESKTOP_CONFIG = {
+  ["desktop-open-minesweeper"]: {
+    clickHandler: (event) => {
+      setWindowVisibility(MINESWEEPER_ID, true);
+    },
+  },
+  ["desktop-open-notepad"]: {
+    clickHandler: (event) => {
+      setWindowVisibility(NOTEPAD_ID, true);
+    },
+  },
+};

@@ -24,7 +24,7 @@ const getLeaderboardForDifficulty = async (shouldShow) => {
   updateLeaderboard();
 
   if (shouldShow) {
-    showLeaderboard();
+    setWindowVisibility("leaderboard", true);
   }
 };
 
@@ -123,14 +123,4 @@ const addEach = (leaderboardTable, values, as, style) => {
   });
   row += "</tr>";
   leaderboardTable.innerHTML += row;
-};
-
-const hideLeaderboard = () => {
-  const leaderboard = document.querySelector(".leaderboard");
-  leaderboard.style.visibility = "hidden";
-};
-
-const showLeaderboard = () => {
-  const leaderboard = document.querySelector(".leaderboard");
-  leaderboard.style.visibility = "visible";
 };

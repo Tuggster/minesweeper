@@ -1,11 +1,22 @@
 // the selection box thing...
 
 let selectDragActive = false;
+let firstClickSafe = false;
 const startPosition = { x: 0, y: 0 };
 const endPosition = { x: 0, y: 0 };
 
 window.addEventListener("mousemove", (event) => {
   if (event.buttons & 1) {
+    if (!selectDragActive && firstClickSafe) {
+      if (didClickWindow(event.target)) {
+        return;
+      }
+
+      selectDragActive = true;
+      startPosition.x = event.clientX;
+      startPosition.y = event.clientY;
+    }
+
     // Starting a new drag
     endPosition.x = event.clientX;
     endPosition.y = event.clientY;
@@ -14,10 +25,12 @@ window.addEventListener("mousemove", (event) => {
   } else {
     selectDragActive = false;
   }
+
   displaySelectionBox();
 });
 
 window.addEventListener("mouseup", () => {
+  firstClickSafe = true;
   if (selectDragActive) {
     selectDragActive = false;
     doSelectionBoxLogic(getSanePositions());
@@ -75,7 +88,11 @@ const containedInSelection = (x, y, width, height, positions) => {
   return xContained && yContained;
 };
 
-const doSelectionBoxLogic = (boxPositions) => {
+const doSelectionBoxLogic = (boxPositions, bypassDrag = false) => {
+  if (!selectDragActive && !bypassDrag) {
+    return;
+  }
+
   const desktopItems = Array.from(document.querySelectorAll(".desktop > div"));
   desktopItems.forEach((element) => {
     const bounds = element.getBoundingClientRect();
@@ -109,15 +126,7 @@ const displaySelectionBox = () => {
 };
 
 const desktopClickHandler = (event) => {
-  if (!selectDragActive) {
-    if (didClickWindow(event.target)) {
-      return;
-    }
-
-    selectDragActive = true;
-    startPosition.x = event.clientX;
-    startPosition.y = event.clientY;
-  }
+  firstClickSafe = !didClickWindow(event.target);
 
   const positions = {
     x: event.pageX,
@@ -126,7 +135,7 @@ const desktopClickHandler = (event) => {
     height: 1,
   };
 
-  doSelectionBoxLogic(positions);
+  doSelectionBoxLogic(positions, true);
 };
 
 window.addEventListener("mousedown", desktopClickHandler);

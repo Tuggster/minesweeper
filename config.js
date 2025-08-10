@@ -143,10 +143,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 LEADERBOARD_ID = "leaderboard";
 MINESWEEPER_ID = "minesweeper";
+NOTEPAD_ID = "notepad";
 
 const WINDOW_DEFAULTS = {
   [MINESWEEPER_ID]: {
     open: true,
     zIndex: WINDOW_Z_INDEX_STACK_START,
+  },
+};
+
+// Desktop Actions
+
+const DESKTOP_CONFIG = {
+  ["desktop-open-minesweeper"]: {
+    clickHandler: (event) => {
+      setWindowVisibility(MINESWEEPER_ID, true);
+    },
+  },
+  ["desktop-open-notepad"]: {
+    clickHandler: (event) => {
+      setWindowVisibility(NOTEPAD_ID, true);
+    },
   },
 };

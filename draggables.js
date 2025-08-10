@@ -111,6 +111,7 @@ window.addEventListener("load", () => {
 const setWindowVisibility = (id, visibility) => {
   const draggable = draggables.find((d) => d.id === id);
   draggable.open = visibility;
+  promoteZIndex(draggable.id);
 
   processDraggables();
 };

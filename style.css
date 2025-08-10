@@ -112,6 +112,10 @@ table {
   user-select: none;
 }
 
+.title-bar h1 {
+  padding-top: 2px;
+}
+
 .title-bar button {
   height: 100%;
   aspect-ratio: 1 / 1;

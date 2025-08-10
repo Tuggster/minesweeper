@@ -36,20 +36,24 @@ window.addEventListener("mouseup", () => {
 });
 
 const didClickWindow = (element) => {
+  return !!findParentOfClass(element, "draggable");
+};
+
+const findParentOfClass = (element, classname) => {
   if (!element) {
-    return false;
+    return null;
   }
 
   if (!element.parentElement) {
-    return false;
+    return null;
   }
 
   const classList = element.classList;
-  if (!classList.contains("draggable")) {
-    return didClickWindow(element.parentElement);
+  if (!classList.contains(classname)) {
+    return findParentOfClass(element.parentElement, classname);
   }
 
-  return true;
+  return element;
 };
 
 const getSanePositions = () => {
@@ -129,12 +133,27 @@ window.addEventListener("mousedown", desktopClickHandler);
 
 // Doubleclick
 
-const desktopDoubleclickHandler = () => {};
+const desktopDoubleclickHandler = (event) => {
+  const target = event.target;
 
-document.addEventListener("load", () => {
+  if (!target) {
+    return;
+  }
+
+  const parent = findParentOfClass(target, "icon");
+  const configItem = DESKTOP_CONFIG[parent.id];
+
+  if (!configItem) {
+    return;
+  }
+
+  configItem?.clickHandler();
+};
+
+window.addEventListener("load", () => {
   const desktopIcons = document.querySelectorAll(".desktop > .icon");
 
   desktopIcons.forEach((icon) => {
-    console.log(icon);
+    icon.addEventListener("dblclick", desktopDoubleclickHandler);
   });
 });

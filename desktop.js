@@ -7,16 +7,6 @@ const endPosition = { x: 0, y: 0 };
 window.addEventListener("mousemove", (event) => {
   if (event.buttons & 1) {
     // Starting a new drag
-    if (!selectDragActive) {
-      if (didClickWindow(event.target)) {
-        return;
-      }
-
-      selectDragActive = true;
-      startPosition.x = event.clientX;
-      startPosition.y = event.clientY;
-    }
-
     endPosition.x = event.clientX;
     endPosition.y = event.clientY;
 
@@ -119,6 +109,16 @@ const displaySelectionBox = () => {
 };
 
 const desktopClickHandler = (event) => {
+  if (!selectDragActive) {
+    if (didClickWindow(event.target)) {
+      return;
+    }
+
+    selectDragActive = true;
+    startPosition.x = event.clientX;
+    startPosition.y = event.clientY;
+  }
+
   const positions = {
     x: event.pageX,
     y: event.pageY,

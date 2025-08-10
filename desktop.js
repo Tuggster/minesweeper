@@ -19,6 +19,8 @@ window.addEventListener("mousemove", (event) => {
 
     endPosition.x = event.clientX;
     endPosition.y = event.clientY;
+
+    doSelectionBoxLogic(getSanePositions());
   } else {
     selectDragActive = false;
   }
@@ -26,8 +28,11 @@ window.addEventListener("mousemove", (event) => {
 });
 
 window.addEventListener("mouseup", () => {
-  selectDragActive = false;
-  displaySelectionBox();
+  if (selectDragActive) {
+    selectDragActive = false;
+    doSelectionBoxLogic(getSanePositions());
+    displaySelectionBox();
+  }
 });
 
 const didClickWindow = (element) => {
@@ -47,14 +52,7 @@ const didClickWindow = (element) => {
   return true;
 };
 
-const displaySelectionBox = () => {
-  const selectionBox = document.querySelector(".selection-box");
-
-  if (!selectDragActive) {
-    selectionBox.style.visibility = "hidden";
-    return;
-  }
-
+const getSanePositions = () => {
   // organize
   const { x: sX, y: sY } = startPosition;
   const { x: eX, y: eY } = endPosition;
@@ -63,14 +61,80 @@ const displaySelectionBox = () => {
   const height = Math.abs(sY - eY);
 
   // Determine top left of selected box
-  const startX = sX < eX ? sX : eX;
-  const startY = sY < eY ? sY : eY;
+  const x = sX < eX ? sX : eX;
+  const y = sY < eY ? sY : eY;
+
+  return { x, y, width, height };
+};
+
+const containedInSelection = (x, y, width, height, positions) => {
+  const rightEdge = x + width;
+  const bottomEdge = y + height;
+
+  const containerRightEdge = positions.x + positions.width;
+  const containerBottomEdge = positions.y + positions.height;
+
+  const xContained = (x >= positions.x || rightEdge >= positions.x) && !(x >= containerRightEdge);
+
+  const yContained = (y >= positions.y || bottomEdge >= positions.y) && !(y >= containerBottomEdge);
+
+  return xContained && yContained;
+};
+
+const doSelectionBoxLogic = (boxPositions) => {
+  const desktopItems = Array.from(document.querySelectorAll(".desktop > div"));
+  desktopItems.forEach((element) => {
+    const bounds = element.getBoundingClientRect();
+    const contained = containedInSelection(bounds.x, bounds.y, bounds.width, bounds.height, boxPositions);
+
+    if (contained) {
+      element.classList.add("selected");
+    } else {
+      element.classList.remove("selected");
+    }
+  });
+};
+
+const displaySelectionBox = () => {
+  const selectionBox = document.querySelector(".selection-box");
+
+  if (!selectDragActive) {
+    selectionBox.style.visibility = "hidden";
+    return;
+  }
+
+  const { x, y, width, height } = getSanePositions();
 
   // apply to css
   selectionBox.style.visibility = "visible";
   selectionBox.style.width = `${width}px`;
   selectionBox.style.height = `${height}px`;
-  selectionBox.style.top = `${startY}px`;
-  selectionBox.style.left = `${startX}px`;
+  selectionBox.style.left = `${x}px`;
+  selectionBox.style.top = `${y}px`;
   //   selectionBox.style.left = `${100}px`;
 };
+
+const desktopClickHandler = (event) => {
+  const positions = {
+    x: event.pageX,
+    y: event.pageY,
+    width: 1,
+    height: 1,
+  };
+
+  doSelectionBoxLogic(positions);
+};
+
+window.addEventListener("mousedown", desktopClickHandler);
+
+// Doubleclick
+
+const desktopDoubleclickHandler = () => {};
+
+document.addEventListener("load", () => {
+  const desktopIcons = document.querySelectorAll(".desktop > .icon");
+
+  desktopIcons.forEach((icon) => {
+    console.log(icon);
+  });
+});

@@ -67,7 +67,9 @@
     <link rel="stylesheet" href="scrollbar.css" />
     <link rel="stylesheet" href="desktop.css" />
     <link rel="stylesheet" href="notepad.css" />
-    <title>Sweep</title>
+    <link rel="icon" type="image/x-icon" href="desktop/minesweeper.png" />
+
+    <title>Minesweeper</title>
   </head>
   <body ondragstart="return false;" ondrop="return false;" oncontextmenu="return false;">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
@@ -296,6 +298,7 @@
       }
 
       function setup() {
+        p5init = true;
         let canvasHTML = document.getElementById("defaultCanvas0"); //createCanvas(windowWidth - border*2, windowHeight - border*2);
         canvasHTML = createCanvas(windowWidth - border * 2, windowHeight - border * 2);
         document.getElementById("defaultCanvas0").remove();
@@ -585,6 +588,10 @@
       }
 
       function newGame() {
+        if (!p5init) {
+          return;
+        }
+
         let canvasHTML = document.getElementById("defaultCanvas0");
         let windowGrabberHeight = document.querySelector(".window-header").getBoundingClientRect().height;
         screenWidth = windowWidth - border * 2;

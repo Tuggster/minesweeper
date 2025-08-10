@@ -1,7 +1,7 @@
 let screenWidth = 100;
 let screenHeight = 100;
 let screenConstraint = 0;
-let p5Init = false;
+let p5init = false;
 
 let cellSize = 0;
 let manualSize = false;

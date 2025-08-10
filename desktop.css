@@ -25,14 +25,25 @@
 }
 
 .icon > p {
-  color: white;
+  color: black;
+
+  background-color: #d2d2d2;
+  padding: 2px;
+
   font-family: msSansSerif;
   font-size: 13px;
+}
+
+.icon.selected > p {
+  color: white;
+  background-color: #36b2ff;
 }
 
 .icon > img {
   aspect-ratio: 1;
   width: 100%;
+
+  image-rendering: pixelated;
 }
 
 /* Selection Box */

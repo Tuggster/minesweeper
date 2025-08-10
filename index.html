@@ -82,6 +82,7 @@
     <script src="solver.js"></script>
     <script src="draggables.js"></script>
     <script src="desktop.js"></script>
+    <script src="wisdom.js"></script>
 
     <div class="selection-box"></div>
 
@@ -200,7 +201,7 @@
           <h2 name="np-help">Help</h2>
         </div>
       </div>
-      <textarea>hello vro</textarea>
+      <textarea id="notebox-text"></textarea>
     </div>
 
     <div class="context-menu">
@@ -268,6 +269,10 @@
           <p id="collapse" onRadioToggle="toggleCollapsed">Collapse Best Times</p>
         </div>
         <hr />
+      </div>
+
+      <div name="np-file" onclick="applyWisdomToNotepad()">
+        <p>Restore Daily Wisdom</p>
       </div>
     </div>
 
